@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+*{
+  list-style: none;
+}
+
+/* globals.css or your relevant stylesheet */
+.layout-container {
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0px;
+}
+
+.sidebar {
+  width: 250px;
+  /* Add any other styles you need for the sidebar */
+}
+/* globals.css or other stylesheet */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+

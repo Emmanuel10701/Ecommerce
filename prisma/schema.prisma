@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URI")
+}
+
+// Enum to define user roles
+enum Role {
+  USER
+  STAFF
+  ADMIN
+}
+
+// Admin model for managing admin users
+model Admin {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  userId String @db.ObjectId
+  role   Role   @default(ADMIN)
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+// Employee model for managing staff users
+model Employee {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  userId String @db.ObjectId
+  role   Role   @default(STAFF)
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+// User model for managing application users
+model User {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?         @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  image          String?
+  accounts       Account[]
+  role           Role            @default(STAFF)
+  employees      Employee[]
+  admin          Admin[]         // Updated to be an array of Admins
+  sessions       Session[]       // Relation to NextAuth Sessions
+  verificationTokens VerificationToken[] // Relation for password reset tokens
+  passwordReset  passwordReset[]
+}
+
+// Session model for managing user sessions
+model Session {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken         String   @unique
+  userId               String   @db.ObjectId
+  expires              DateTime
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Subscription model for managing user subscriptions
+model Subscription {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  email                String   @unique
+  createdAt            DateTime @default(now())
+}
+
+// Account model for managing user accounts
+model Account {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId               String   @db.ObjectId
+  type                 String
+  provider             String
+  providerAccountId    String
+  refresh_token        String?
+  access_token         String?
+  expires_at           Int?
+  token_type           String?
+  scope                String?
+  id_token             String?
+  session_state        String?
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// PasswordReset model for managing password reset tokens
+model passwordReset {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId               String   @db.ObjectId
+  token                String   @unique
+  createdAt            DateTime @default(now())
+  expires              DateTime
+
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Product model for managing products
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Float
+  oldPrice    Float?
+  ratings     Float    @default(0)
+  image       String?
+  quantity    Int?     @default(0)
+  createdAt   DateTime @default(now())
+  category    String?
+}
+
+// Customer model for managing customer information
+model Customer {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String  @unique
+  phoneNumber String?
+  address     String
+  userId      String  @db.ObjectId
+  role        Role    @default(USER)
+  orders      Order[] // A customer can have multiple orders
+}
+
+// Order model for managing customer orders
+model Order {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  name          String      // Customer name
+  email         String      // Customer email
+  address       String      // Customer address
+  city          String
+  zip           String
+  customerId    String      @db.ObjectId
+  customer      Customer    @relation(fields: [customerId], references: [id]) // Relation to Customer
+  orderItems    OrderItem[]
+  items         Json
+  total         Float
+  paymentMethod String
+  status        String      @default("pending")
+  createdAt     DateTime    @default(now())
+}
+
+// VerificationToken model for managing email verification tokens
+model VerificationToken {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier           String
+  token                String
+  expires              DateTime
+  userId               String   @db.ObjectId
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([identifier, token])
+}
+
+// OrderItem model for managing items within an order
+model OrderItem {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String @db.ObjectId
+  productId String @db.ObjectId
+  quantity  Int
+  price     Float
+  order     Order  @relation(fields: [orderId], references: [id])
+}
+
+// Enum to define various order statuses
+enum OrderStatus {
+  DELIVERED
+  PENDING
+  PAID
+}
+
+// Event model for managing events
+model Event {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   // Title of the event
+  date        DateTime // Date of the event
+  color       String   // Color associated with the event
+  createdAt   DateTime @default(now()) // Timestamp for when the event was created
+  updatedAt   DateTime @updatedAt         // Timestamp for when the event was last updated
+}
