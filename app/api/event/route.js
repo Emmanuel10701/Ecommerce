@@ -1,8 +1,9 @@
+// pages/api/events.js
 import { NextResponse } from 'next/server';
 import prisma from '../../../libs/prismadb';
 
 // Handler for GET (List Events) and POST (Create Event)
-export async function GET(request: Request) {
+export async function GET(request) {
   try {
     const events = await prisma.event.findMany();
     return NextResponse.json(events);
@@ -12,8 +13,8 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
-  const {  title, date, color } = await request.json();
+export async function POST(request) {
+  const { title, date, color } = await request.json();
   if (!title || !date || !color) {
     return NextResponse.json({ message: 'Invalid request data' }, { status: 400 });
   }
