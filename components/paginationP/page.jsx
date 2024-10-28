@@ -1,16 +1,10 @@
+// src/components/Pagination.js
 import React from 'react';
 
-interface PaginationProps {
-  currentPage: number;
-  totalItems: number;
-  pageSize: number;
-  onPageChange: (page: number) => void;
-}
-
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalItems, pageSize, onPageChange }) => {
+const Pagination = ({ currentPage, totalItems, pageSize, onPageChange }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
     }
