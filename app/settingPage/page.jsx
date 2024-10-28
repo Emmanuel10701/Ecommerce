@@ -12,30 +12,23 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/navigation';
 
-interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-}
-
-const UserManagement: React.FC = () => {
-    const [currentTab, setCurrentTab] = useState<'admins' | 'employees'>('employees');
-    const [employees, setEmployees] = useState<User[]>([]);
-    const [admins, setAdmins] = useState<User[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [actionType, setActionType] = useState<'addAdmin' | 'addEmployee' | 'removeAdmin' | 'removeEmployee'>('addAdmin');
-    const [showActionModal, setShowActionModal] = useState<boolean>(false);
-    const [showAccessDeniedModal, setShowAccessDeniedModal] = useState<boolean>(false);
-    const [showRoleConflictModal, setShowRoleConflictModal] = useState<boolean>(false);
-    const [searchQuery, setSearchQuery] = useState<string>('');
+const UserManagement = () => {
+    const [currentTab, setCurrentTab] = useState('employees');
+    const [employees, setEmployees] = useState([]);
+    const [admins, setAdmins] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [actionType, setActionType] = useState('addAdmin');
+    const [showActionModal, setShowActionModal] = useState(false);
+    const [showAccessDeniedModal, setShowAccessDeniedModal] = useState(false);
+    const [showRoleConflictModal, setShowRoleConflictModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
     const router = useRouter();
-    const [isProcessing, setIsProcessing] = useState(false); // Add this state
+    const [isProcessing, setIsProcessing] = useState(false);
 
     // Fetch all users
     const fetchUsers = async () => {
@@ -47,7 +40,7 @@ const UserManagement: React.FC = () => {
     };
 
     // Add Admin
-    const addAdmin = async (userId: string, name: string) => {
+    const addAdmin = async (userId, name) => {
         const response = await fetch('/api/admins', {
             method: 'POST',
             headers: {
@@ -62,7 +55,7 @@ const UserManagement: React.FC = () => {
     };
 
     // Add Employee
-    const addEmployee = async (userId: string) => {
+    const addEmployee = async (userId) => {
         const response = await fetch('/api/employees', {
             method: 'POST',
             headers: {
@@ -77,7 +70,7 @@ const UserManagement: React.FC = () => {
     };
 
     // Remove Employee
-    const removeEmployee = async (userId: string) => {
+    const removeEmployee = async (userId) => {
         const response = await fetch(`/api/employees/${userId}`, {
             method: 'DELETE',
         });
@@ -88,7 +81,7 @@ const UserManagement: React.FC = () => {
     };
 
     // Remove Admin
-    const removeAdmin = async (userId: string) => {
+    const removeAdmin = async (userId) => {
         const response = await fetch(`/api/admins/${userId}`, {
             method: 'DELETE',
         });
@@ -104,8 +97,8 @@ const UserManagement: React.FC = () => {
                 const usersData = await fetchUsers();
                 setUsers(Array.isArray(usersData.data) ? usersData.data : []);
 
-                const adminsData = usersData.data.filter((user: User) => user.role === 'ADMIN');
-                const employeesData = usersData.data.filter((user: User) => user.role === 'STAFF');
+                const adminsData = usersData.data.filter(user => user.role === 'ADMIN');
+                const employeesData = usersData.data.filter(user => user.role === 'STAFF');
 
                 setAdmins(adminsData);
                 setEmployees(employeesData);
@@ -141,7 +134,7 @@ const UserManagement: React.FC = () => {
         }
 
         try {
-            setIsProcessing(true); // Start processing
+            setIsProcessing(true);
             const userRole = selectedUser.role;
 
             if (actionType === 'addAdmin' && userRole === 'ADMIN') {
@@ -168,10 +161,9 @@ const UserManagement: React.FC = () => {
             }
 
             setShowActionModal(false);
-            // Fetch updated user list
             const usersData = await fetchUsers();
-            const adminsData = usersData.data.filter((user: User) => user.role === 'ADMIN');
-            const employeesData = usersData.data.filter((user: User) => user.role === 'STAFF');
+            const adminsData = usersData.data.filter(user => user.role === 'ADMIN');
+            const employeesData = usersData.data.filter(user => user.role === 'STAFF');
 
             setAdmins(adminsData);
             setEmployees(employeesData);
@@ -179,7 +171,7 @@ const UserManagement: React.FC = () => {
             console.error('Error performing action', error);
             toast.error('Failed to perform action.');
         } finally {
-            setIsProcessing(false); // End processing
+            setIsProcessing(false);
         }
     };
 
@@ -218,7 +210,7 @@ const UserManagement: React.FC = () => {
                     <button
                         onClick={handleLogin}
                         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-                        disabled={isProcessing} // Disable button while processing
+                        disabled={isProcessing}
                     >
                         {isProcessing ? 'Processing...' : 'Go to Login Page'}
                     </button>
