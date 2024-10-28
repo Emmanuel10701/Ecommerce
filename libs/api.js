@@ -1,4 +1,4 @@
-// libs/api.ts
+// libs/api.js
 import { NextResponse } from 'next/server';
 
 // Fetch all users
@@ -11,7 +11,7 @@ export const fetchUsers = async () => {
 };
 
 // Add Admin
-export const addAdmin = async (userId: string, name: string) => {
+export const addAdmin = async (userId, name) => {
     const response = await fetch('/api/admin', {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ export const addAdmin = async (userId: string, name: string) => {
 };
 
 // Add Employee
-export const addEmployee = async (userId: string) => {
+export const addEmployee = async (userId) => {
     const response = await fetch('/api/employee', {
         method: 'POST',
         headers: {
@@ -41,7 +41,7 @@ export const addEmployee = async (userId: string) => {
 };
 
 // Remove Employee
-export const removeEmployee = async (userId: string) => {
+export const removeEmployee = async (userId) => {
     const response = await fetch(`/api/employee/${userId}`, {
         method: 'DELETE',
     });
@@ -52,7 +52,7 @@ export const removeEmployee = async (userId: string) => {
 };
 
 // Remove Admin
-export const removeAdmin = async (userId: string) => {
+export const removeAdmin = async (userId) => {
     const response = await fetch(`/api/admin/${userId}`, {
         method: 'DELETE',
     });
