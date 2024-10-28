@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
@@ -6,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const ResetPasswordPage: React.FC = () => {
+const ResetPasswordPage = () => {
   const router = useRouter();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,7 +15,7 @@ const ResetPasswordPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const token = new URLSearchParams(window.location.search).get('token');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -59,11 +60,11 @@ const ResetPasswordPage: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <form
         onSubmit={handleSubmit}
-        className="max-w-md w-full bg-white p-10 rounded-xl shadow-lg" // Increased padding and width
+        className="max-w-md w-full bg-white p-10 rounded-xl shadow-lg"
       >
         <h2 className="text-3xl mt-10 text-slate-700 font-extrabold mb-6 text-center">🛅 Reset Password</h2>
 
-        <div className="relative mb-6"> {/* Increased bottom margin */}
+        <div className="relative mb-6">
           <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">New Password</label>
           <input
             id="newPassword"
