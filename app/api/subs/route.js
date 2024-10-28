@@ -1,5 +1,6 @@
+// pages/api/subscription.js
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer'; // Import nodemailer
+import nodemailer from 'nodemailer';
 import prisma from '../../../libs/prismadb'; // Adjust the import according to your project structure
 
 // Nodemailer configuration
@@ -11,7 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function POST(request: Request) {
+export async function POST(request) {
   const { email } = await request.json();
 
   // Validate email
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
 
     // Send "Thank You" email after subscription creation
     const mailOptions = {
-      from: 'emmauelmakau90@gmail.com', // Replace with your email address
+      from: process.env.EMAIL_USER, // Use environment variable for the email address
       to: email, // The email of the new subscriber
       subject: 'Thank you for subscribing!',
       html: `
