@@ -7,31 +7,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import Pagination from '../../components/paginationP/page';
 import Sidebar from '../../components/sidebar/page';
 import { useSession } from 'next-auth/react';
-import { AiOutlineLogin } from "react-icons/ai"; // Modern icon for login
-
+import { AiOutlineLogin } from "react-icons/ai";
 import { useRouter } from 'next/navigation';
 import { FaSync } from 'react-icons/fa';
 import StarRating from '../../components/starRating/page';
 import CircularProgress from '@mui/material/CircularProgress';
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  image: string;
-  oldPrice?: number;
-  starRating: number;
-  category: string;
-}
-
-const ListProducts: React.FC = () => {
+const ListProducts = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -85,8 +72,8 @@ const ListProducts: React.FC = () => {
     }
   };
 
-  const handleOpenModal = (type: 'view' | 'delete', productId?: string) => {
-    if (type === 'view' && (session?.user as { role?: string })?.role !== 'ADMIN') {
+  const handleOpenModal = (type, productId) => {
+    if (type === 'view' && (session?.user)?.role !== 'ADMIN') {
       setIsAccessDeniedModalOpen(true);
       return;
     }
@@ -128,27 +115,22 @@ const ListProducts: React.FC = () => {
 
   if (!session) {
     return (
-      <div className="flex items-center  justify-center min-h-screen bg-gray-100">
-        <div className="bg-white  p-8 rounded-xl shadow-lg w-full max-w-sm text-center">
-        <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-  Please Log In
-</h2>
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm text-center">
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            Please Log In
+          </h2>
           <p className="mb-6 text-l font-semibold text-center">You need to log in or register to access this page.</p>
           <div className='flex justify-center items-center'>
             <div className='flex items-center'>
-            <button 
-            onClick={() => router.push("/login")} 
-            className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 border focus:outline-emerald-300 text-slate-500 py-2 px-4 rounded-full  transition duration-300"
-          >
-            <AiOutlineLogin className="mr-2" /> Go to Login Page
-          </button>
+              <button 
+                onClick={() => router.push("/login")} 
+                className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 border focus:outline-emerald-300 text-slate-500 py-2 px-4 rounded-full transition duration-300"
+              >
+                <AiOutlineLogin className="mr-2" /> Go to Login Page
+              </button>
             </div>
-         
-
-
-     
           </div>
-     
         </div>
       </div>
     );
@@ -159,36 +141,34 @@ const ListProducts: React.FC = () => {
       <div className="flex px-4 md:px-8 py-4">
         <div className="flex-1">
           <div className="mb-4 flex items-center justify-between">
-  
-              <button
-                onClick={() => router.push('/createproduct')}
-                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-              >
-                Add Product
-              </button>
-            
+            <button
+              onClick={() => router.push('/createproduct')}
+              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+            >
+              Add Product
+            </button>
             <button
               onClick={() => {
                 setIsRefreshing(true);
                 fetchProducts().then(() => setIsRefreshing(false));
               }}
-              className="bg-gray-500 flex  text-white py-2 px-4 rounded hover:bg-gray-600"
+              className="bg-gray-500 flex text-white py-2 px-4 rounded hover:bg-gray-600"
               disabled={isRefreshing}
             >
               {isRefreshing ? <CircularProgress size={24} /> : <FaSync className="mr-2" />} Refresh
             </button>
             <button
-              onClick={() => {router.push("analytics")
-              }}
-              className="bg-transparent rounded-full  flex border text-slate-600 py-2 px-6 shandow-md md:shandow-lg  hover:bg-slate-300"
+              onClick={() => { router.push("analytics") }}
+              className="bg-transparent rounded-full flex border text-slate-600 py-2 px-6 shadow-md md:shadow-lg hover:bg-slate-300"
             >
-Admin           </button>
+              Admin
+            </button>
             <input
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder="Search..."
-              className="ml-4 p-2 shandow-md border border-gray-300 rounded"
+              className="ml-4 p-2 shadow-md border border-gray-300 rounded"
             />
             <select
               value={selectedCategory}
@@ -332,26 +312,25 @@ Admin           </button>
 
       {/* Access Denied Modal */}
       {isAccessDeniedModalOpen && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg relative transform transition-all duration-300 ease-in-out scale-95 hover:scale-100">
-      <button
-        className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
-        onClick={() => setIsAccessDeniedModalOpen(false)}
-      >
-        &times;
-      </button>
-      <h2 className="text-2xl font-semibold mb-4 text-center">Access Denied</h2>
-      <p className="text-gray-700 text-center mb-6">You do not have permission to view this product.</p>
-      <button
-        onClick={() => setIsAccessDeniedModalOpen(false)}
-        className="bg-gray-500 text-white py-2 px-6 rounded-full hover:bg-gray-600 transition duration-200"
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
-
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg relative transform transition-all duration-300 ease-in-out scale-95 hover:scale-100">
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+              onClick={() => setIsAccessDeniedModalOpen(false)}
+            >
+              &times;
+            </button>
+            <h2 className="text-2xl font-semibold mb-4 text-center">Access Denied</h2>
+            <p className="text-gray-700 text-center mb-6">You do not have permission to view this product.</p>
+            <button
+              onClick={() => setIsAccessDeniedModalOpen(false)}
+              className="bg-gray-500 text-white py-2 px-6 rounded-full hover:bg-gray-600 transition duration-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
