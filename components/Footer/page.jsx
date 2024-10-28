@@ -1,8 +1,8 @@
-// components/Footer.tsx
+// components/Footer.jsx
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'; // Import icons from react-icons
 
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-6 mt-12">
       <div className="container mx-auto px-4">
@@ -18,10 +18,10 @@ const Footer: React.FC = () => {
           <div className="w-full sm:w-1/3 mb-6">
             <h4 className="text-lg font-bold mb-3">Quick Links</h4>
             <ul className="space-y-2">
-              <li><span className="text-gray-400 hover:text-white cursor-pointer"><span>Home</span></span></li>
-              <li><span className="text-gray-400 hover:text-white cursor-pointer"><span>Shop</span></span></li>
-              <li><span className="text-gray-400 hover:text-white cursor-pointer"><span>About</span></span></li>
-              <li><span className="text-gray-400 hover:text-white cursor-pointer"><span>Contact</span></span></li>
+              <li><span className="text-gray-400 hover:text-white cursor-pointer">Home</span></li>
+              <li><span className="text-gray-400 hover:text-white cursor-pointer">Shop</span></li>
+              <li><span className="text-gray-400 hover:text-white cursor-pointer">About</span></li>
+              <li><span className="text-gray-400 hover:text-white cursor-pointer">Contact</span></li>
             </ul>
           </div>
 
