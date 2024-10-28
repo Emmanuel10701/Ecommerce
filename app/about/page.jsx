@@ -62,8 +62,8 @@ const teamMembers = [
   }
 ];
 
-const About: React.FC = () => {
-  const testimonialsRef = useRef<HTMLDivElement>(null);
+const About = () => {
+  const testimonialsRef = useRef(null);
 
   const scrollLeft = () => {
     if (testimonialsRef.current) {
