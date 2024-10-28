@@ -1,26 +1,19 @@
-// src/components/star/StarRating.tsx
+// src/components/star/StarRating.js
 import React from 'react';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 
-type StarRatingProps = {
-  rating: number;
-  color?: string; // Color of the stars
-  backgroundColor?: string; // Background color of the rating section
-  starBackgroundColor?: string; // Background color of individual stars
-};
-
-const StarRating: React.FC<StarRatingProps> = ({
+const StarRating = ({
   rating,
   color = 'orange',
   backgroundColor = 'transparent',
-  starBackgroundColor = 'rgba(255, 255, 0, 0.2)', // Light yellow background for stars
+  starBackgroundColor = 'rgba(255, 255, 0, 0.2)',
 }) => {
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     const isFullStar = rating >= i;
     const isHalfStar = rating >= i - 0.5 && rating < i;
-    const starColor = isFullStar || isHalfStar ? color : 'transparent'; // Color for full or half stars
-    const starBackground = isFullStar || isHalfStar ? starBackgroundColor : 'transparent'; // Background color for stars
+    const starColor = isFullStar || isHalfStar ? color : 'transparent';
+    const starBackground = isFullStar || isHalfStar ? starBackgroundColor : 'transparent';
 
     stars.push(
       <div
@@ -28,8 +21,8 @@ const StarRating: React.FC<StarRatingProps> = ({
         style={{
           backgroundColor: starBackground,
           display: 'inline-block',
-          padding: '2px', // Small padding to show background
-          borderRadius: '50%', // Round background
+          padding: '2px',
+          borderRadius: '50%',
         }}
       >
         {isFullStar ? (
