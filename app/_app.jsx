@@ -1,5 +1,4 @@
-// app/_app.tsx
-import type { AppProps } from 'next/app';
+// app/_app.jsx
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import { Provider } from './provider';
@@ -7,7 +6,7 @@ import { CartProvider } from '../context/page'; // Ensure the path is correct
 
 const inter = Inter({ subsets: ["latin"] });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
