@@ -7,67 +7,29 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const kenyaCounties = [
-  "Baringo",
-  "Bomet",
-  "Bungoma",
-  "Busia",
-  "Elgeyo-Marakwet",
-  "Embu",
-  "Garissa",
-  "Homa Bay",
-  "Isiolo",
-  "Kajiado",
-  "Kakamega",
-  "Kericho",
-  "Kiambu",
-  "Kilifi",
-  "Kirinyaga",
-  "Kisii",
-  "Kisumu",
-  "Kitui",
-  "Kwale",
-  "Laikipia",
-  "Lamu",
-  "Machakos",
-  "Makueni",
-  "Mandera",
-  "Marsabit",
-  "Meru",
-  "Migori",
-  "Mombasa",
-  "Murang'a",
-  "Nairobi",
-  "Nakuru",
-  "Nandi",
-  "Narok",
-  "Nyamira",
-  "Nyandarua",
-  "Nyeri",
-  "Samburu",
-  "Siaya",
-  "Taita-Taveta",
-  "Tana River",
-  "Tharaka-Nithi",
-  "Trans-Nzoia",
-  "Turkana",
-  "Uasin Gishu",
-  "Vihiga",
-  "Wajir",
-  "West Pokot",
+  "Baringo", "Bomet", "Bungoma", "Busia", "Elgeyo-Marakwet",
+  "Embu", "Garissa", "Homa Bay", "Isiolo", "Kajiado",
+  "Kakamega", "Kericho", "Kiambu", "Kilifi", "Kirinyaga",
+  "Kisii", "Kisumu", "Kitui", "Kwale", "Laikipia",
+  "Lamu", "Machakos", "Makueni", "Mandera", "Marsabit",
+  "Meru", "Migori", "Mombasa", "Murang'a", "Nairobi",
+  "Nakuru", "Nandi", "Narok", "Nyamira", "Nyandarua",
+  "Nyeri", "Samburu", "Siaya", "Taita-Taveta", "Tana River",
+  "Tharaka-Nithi", "Trans-Nzoia", "Turkana", "Uasin Gishu",
+  "Vihiga", "Wajir", "West Pokot",
 ];
 
-const ProfileSettings: React.FC = () => {
+const ProfileSettings = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [country] = useState("Kenya");
+  const [country] = useState("Kenya 🇰🇪");
   const [county, setCounty] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
-    // Load the profile data from localStorage if it exists
     const savedName = localStorage.getItem("name");
     const savedEmail = localStorage.getItem("email");
     const savedCounty = localStorage.getItem("county");
@@ -85,16 +47,16 @@ const ProfileSettings: React.FC = () => {
     if (savedImage) setProfileImage(savedImage);
   }, []);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
       const validTypes = ["image/jpeg", "image/png", "image/jpg", "image/avif", "image/webp"];
       if (validTypes.includes(file.type)) {
         const reader = new FileReader();
         reader.onload = () => {
-          const imageData = reader.result as string;
+          const imageData = reader.result;
           setProfileImage(imageData);
-          localStorage.setItem("profileImage", imageData); // Save to localStorage
+          localStorage.setItem("profileImage", imageData);
         };
         reader.readAsDataURL(file);
       } else {
@@ -111,7 +73,6 @@ const ProfileSettings: React.FC = () => {
       return;
     }
 
-    // Save profile data to localStorage
     localStorage.setItem("name", name);
     localStorage.setItem("email", email);
     localStorage.setItem("county", county);
@@ -119,9 +80,9 @@ const ProfileSettings: React.FC = () => {
     localStorage.setItem("address", address);
     localStorage.setItem("phoneNumber", phoneNumber);
 
-    // Here, add logic to push changes to the database using Prisma
+    // Add logic to push changes to the database using Prisma here
 
-    toast.success("Profile updated successfully!");
+    toast.success("Profile updated successfully! 🎉");
     navigate.push("/");
   };
 
@@ -187,7 +148,7 @@ const ProfileSettings: React.FC = () => {
             <label className="block text-gray-700 font-bold mb-2">Country</label>
             <div className="flex items-center">
               <Image src="/assets/flag.png" alt="Kenya Flag" width={24} height={28} />
-              <span className="ml-2">Kenya</span>
+              <span className="ml-2">Kenya 🇰🇪</span>
             </div>
           </div>
           <div>
