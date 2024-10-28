@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { IoLocation } from "react-icons/io5";
 import { MdMarkEmailRead } from "react-icons/md";
@@ -8,26 +8,20 @@ import { FaPhone } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
-const Contact: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+const Contact = () => {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -68,7 +62,6 @@ const Contact: React.FC = () => {
         Get In Touch
       </motion.h1>
 
-      {/* Flex container for image and contact information */}
       <div className="flex md:w-1/2 w-full flex-col md:flex-row mx-auto items-center md:justify-between px-8 gap-8">
         <motion.img
           src="/images/girl.png" // Replace with your image URL
@@ -112,7 +105,6 @@ const Contact: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Contact form */}
       <motion.div
         className="flex flex-col flex-1 mt-10 md:mt-0"
         variants={{
