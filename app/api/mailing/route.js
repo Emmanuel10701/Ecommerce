@@ -1,8 +1,9 @@
+// pages/api/mail.js
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 // Email sending function
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     // Parse the request body
     const { subject, message, emails } = await request.json();
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
     });
 
     // Helper function to send emails
-    const sendEmail = async (recipientEmail: string) => {
+    const sendEmail = async (recipientEmail) => {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: recipientEmail,
@@ -55,11 +56,11 @@ export async function POST(request: Request) {
     };
 
     // Send emails concurrently using Promise.all
-    await Promise.all(emails.map((recipient: { email: string }) => sendEmail(recipient.email)));
+    await Promise.all(emails.map(recipient => sendEmail(recipient.email)));
 
     return NextResponse.json({ message: 'Emails sent successfully!' }, { status: 200 });
 
-  } catch (error:any) {
+  } catch (error) {
     console.error('Error sending emails:', error.message || error);
     return NextResponse.json({ error: 'Failed to send emails.' }, { status: 500 });
   }
