@@ -1,8 +1,9 @@
+// pages/api/events/[id].js
 import { NextResponse } from 'next/server';
 import prisma from '../../../../libs/prismadb'; // Adjust the import path as necessary
 
 // GET handler to fetch a single event by ID
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request, { params }) {
   const { id } = params;
 
   if (!id) {
@@ -26,7 +27,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 }
 
 // PUT handler to update an event
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request, { params }) {
   const { id } = params;
   const { title, date, color } = await request.json();
 
@@ -48,7 +49,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 }
 
 // DELETE handler to delete an event
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request, { params }) {
   const { id } = params;
 
   if (!id) {
