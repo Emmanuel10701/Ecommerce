@@ -1,8 +1,9 @@
+// pages/api/customers/[id].js
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../libs/prismadb'; // Adjust the path if needed
 
 // GET request: Retrieve a single customer by ID
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -26,7 +27,7 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(customer);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching customer:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error fetching customer' }),
@@ -36,7 +37,7 @@ export async function GET(req: NextRequest) {
 }
 
 // PUT request: Update a customer by ID
-export async function PUT(req: NextRequest) {
+export async function PUT(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
   const body = await req.json();
@@ -61,7 +62,7 @@ export async function PUT(req: NextRequest) {
     });
 
     return NextResponse.json(updatedCustomer);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating customer:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error updating customer' }),
@@ -71,7 +72,7 @@ export async function PUT(req: NextRequest) {
 }
 
 // DELETE request: Delete a customer by ID
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -103,7 +104,7 @@ export async function DELETE(req: NextRequest) {
       JSON.stringify({ message: 'Customer deleted successfully' }),
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error deleting customer:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error deleting customer' }),
