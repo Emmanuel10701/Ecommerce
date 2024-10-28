@@ -1,10 +1,10 @@
-// pages/404.tsx
+// pages/404.js
 "use client";
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const NotFound: React.FC = () => {
+const NotFound = () => {
   const router = useRouter();
 
   const handleNavigation = () => {
