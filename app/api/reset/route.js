@@ -1,8 +1,9 @@
+// pages/api/reset-password.js
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import prisma from '../../../libs/prismadb'; // Adjust the path as needed
 
-export async function POST(req: Request) {
+export async function POST(req) {
   const { token, newPassword } = await req.json();
 
   try {
