@@ -1,8 +1,9 @@
+// pages/api/employees/index.js
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../libs/prismadb'; // Adjust the path if needed
 
 // Handle POST request for creating a new employee
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const body = await req.json();
     const { name, userId } = body;
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(newEmployee, { status: 201 });
-  } catch (error:any) {
+  } catch (error) {
     console.error('Error creating employee:', error);
     return NextResponse.json(
       { error: 'Failed to create employee. Please try again later.', details: error.message },
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
 }
 
 // Handle GET request for fetching all employees
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   try {
     // Fetch all employees
     const employees = await prisma.employee.findMany({
@@ -54,7 +55,7 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json(employees);
-  } catch (error:any) {
+  } catch (error) {
     console.error('Error fetching employees:', error);
     return NextResponse.json(
       { error: 'Failed to fetch employees. Please try again later.', details: error.message },
