@@ -1,13 +1,7 @@
+// components/Datacard.jsx
 import React from 'react';
 
-interface CardProps {
-  title: string;
-  content: string;
-  bgColor: string;  // Background color
-  icon: React.ReactNode; // Icon to be displayed in the card
-}
-
-const Datacard: React.FC<CardProps> = ({ title, content, bgColor, icon }) => {
+const Datacard = ({ title, content, bgColor, icon }) => {
   // Apply background color directly
   const bgColorClass = `bg-${bgColor}`;
 
