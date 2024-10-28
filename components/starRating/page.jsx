@@ -1,12 +1,7 @@
-// StarRating.tsx
+// StarRating.js
 import React from 'react';
 
-interface StarRatingProps {
-  rating: number;
-  totalStars?: number;
-}
-
-const StarRating: React.FC<StarRatingProps> = ({ rating, totalStars = 5 }) => {
+const StarRating = ({ rating, totalStars = 5 }) => {
   const stars = [];
   for (let i = 1; i <= totalStars; i++) {
     if (i <= rating) {
