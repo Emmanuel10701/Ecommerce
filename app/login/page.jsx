@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -28,7 +28,7 @@ const Login = () => {
     setIsValid(data.email.trim() !== "" && data.password.trim() !== "");
   }, [data]);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isValid) {
@@ -72,7 +72,7 @@ const Login = () => {
               id="email"
               type="email"
               placeholder="Enter your email"
-              className="w-full mt-1 p-3 border-gray-300 rounded-md shadow-lg focus:ring-4 focus:ring-blue-300 focus:border-blue-500 sm:text-sm"
+              className="w-full mt-1 p-5 border-gray-300 rounded-md shadow-lg focus:ring-4 focus:ring-blue-300 focus:border-blue-500 text-lg"
               value={data.email}
               onChange={(e) => setData({ ...data, email: e.target.value })}
               required
@@ -88,7 +88,7 @@ const Login = () => {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                className="w-full mt-1 p-3 border-gray-300 rounded-md shadow-lg focus:ring-4 focus:ring-blue-300 focus:border-blue-500 sm:text-sm pr-12"
+                className="w-full mt-1 p-5 border-gray-300 rounded-md shadow-lg focus:ring-4 focus:ring-blue-300 focus:border-blue-500 text-lg pr-12"
                 value={data.password}
                 onChange={(e) => setData({ ...data, password: e.target.value })}
                 required
