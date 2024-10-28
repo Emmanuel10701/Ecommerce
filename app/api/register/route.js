@@ -1,19 +1,14 @@
+// pages/api/register.js
 import bcrypt from 'bcrypt';
 import prisma from '../../../libs/prismadb';
 import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
 
-interface RegisterRequestBody {
-  name: string;
-  email: string;
-  password: string;
-}
-
+// Password validation regex
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-export async function POST(request: NextRequest) {
+export async function POST(request) {
   try {
-    const body: RegisterRequestBody = await request.json();
+    const body = await request.json();
     const { name, email, password } = body;
 
     // Check for missing fields
