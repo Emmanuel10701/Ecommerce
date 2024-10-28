@@ -1,43 +1,10 @@
+// context/CartContext.js
 "use client"; // Ensure this file is treated as client-side
 
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-// Define types
-interface CartItem {
-  id: string; // Ensure id is a string
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl: string; // Use imageUrl, not image
-}
-
-interface CartState {
-  items: CartItem[];
-}
-
-interface AddToCartAction {
-  type: 'ADD_TO_CART';
-  payload: CartItem;
-}
-
-interface RemoveFromCartAction {
-  type: 'REMOVE_FROM_CART';
-  payload: { id: string }; // Ensure id is a string
-}
-
-interface UpdateQuantityAction {
-  type: 'UPDATE_QUANTITY';
-  payload: { id: string; quantity: number }; // Ensure id is a string
-}
-
-type CartAction = AddToCartAction | RemoveFromCartAction | UpdateQuantityAction;
-
-const CartContext = createContext<{
-  state: CartState;
-  dispatch: React.Dispatch<CartAction>;
-} | undefined>(undefined);
-
-const cartReducer = (state: CartState, action: CartAction): CartState => {
+// Cart item structure
+const cartReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART': {
       const existingItemIndex = state.items.findIndex(item => item.id === action.payload.id);
@@ -63,13 +30,13 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
   }
 };
 
-// Function to load cart from localStorage, wrapped in a check
-const loadCartFromLocalStorage = (): CartState => {
+// Function to load cart from localStorage
+const loadCartFromLocalStorage = () => {
   if (typeof window !== 'undefined') {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       try {
-        const items: CartItem[] = JSON.parse(savedCart);
+        const items = JSON.parse(savedCart);
         if (Array.isArray(items)) {
           return { items };
         }
@@ -81,7 +48,7 @@ const loadCartFromLocalStorage = (): CartState => {
   return { items: [] };
 };
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, loadCartFromLocalStorage());
 
   useEffect(() => {
@@ -96,6 +63,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     </CartContext.Provider>
   );
 };
+
+export const CartContext = createContext(undefined);
 
 export const useCart = () => {
   const context = useContext(CartContext);
