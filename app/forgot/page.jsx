@@ -10,12 +10,12 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false); // State for error handling
 
-  const isValidEmail = (email: string) => {
+  const isValidEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValidEmail(email)) {
       setMessage('Please enter a valid email address.');
