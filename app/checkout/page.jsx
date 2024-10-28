@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/page'; // Adjust to your actual path
 import { CircularProgress, Modal, Button } from '@mui/material';
 
-const CheckoutPage: React.FC = () => {
+const CheckoutPage = () => {
   const { state } = useCart();
   const [billingInfo, setBillingInfo] = useState(() => {
     const savedInfo = localStorage.getItem('billingInfo');
@@ -13,7 +13,7 @@ const CheckoutPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [total, setTotal] = useState(0);
-  const [loadingCustomerDetails, setLoadingCustomerDetails] = useState(true); // New state to manage loading
+  const [loadingCustomerDetails, setLoadingCustomerDetails] = useState(true);
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
@@ -37,7 +37,7 @@ const CheckoutPage: React.FC = () => {
       } catch (error) {
         console.error('Error fetching customer details:', error);
       } finally {
-        setLoadingCustomerDetails(false); // Mark loading as done
+        setLoadingCustomerDetails(false);
       }
     };
 
@@ -52,7 +52,7 @@ const CheckoutPage: React.FC = () => {
     setTotal(orderTotal);
   }, [state.items]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedInfo = { ...billingInfo, [name]: value };
     setBillingInfo(updatedInfo);
@@ -81,7 +81,7 @@ const CheckoutPage: React.FC = () => {
       alert('Error processing payment.');
     } finally {
       setLoading(false);
-      setModalOpen(false); // Close modal after processing
+      setModalOpen(false);
     }
   };
 
@@ -89,7 +89,6 @@ const CheckoutPage: React.FC = () => {
     <div className="checkout p-4 max-w-screen-lg mx-auto">
       <h1 className="text-3xl text-slate-600 font-bold mb-6">Checkout</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Order Summary */}
         <div className="order-summary bg-white p-4 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-blue-500 mb-4 text-center">Order Summary</h2>
           <div className="space-y-4">
@@ -112,7 +111,6 @@ const CheckoutPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Billing Information */}
         <div className="billing-info bg-white p-4 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-blue-500 mb-4">Billing Information</h2>
           <form onSubmit={e => { e.preventDefault(); setModalOpen(true); }}>
@@ -182,7 +180,6 @@ const CheckoutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Payment Confirmation Modal */}
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
