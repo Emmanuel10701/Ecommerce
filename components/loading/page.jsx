@@ -1,4 +1,4 @@
-// components/SkeletonCard.tsx
+// components/SkeletonCard.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -13,7 +13,7 @@ const skeletonVariants = {
   }
 };
 
-const SkeletonCard: React.FC = () => {
+const SkeletonCard = () => {
   return (
     <div className="border rounded-lg overflow-hidden shadow-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2">
       <motion.div
