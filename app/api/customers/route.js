@@ -1,7 +1,8 @@
+// pages/api/customers/index.js
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../libs/prismadb'; // Adjust the path if needed
 
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const url = new URL(req.url);
   const id = url.searchParams.get('id');
 
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const body = await req.json();
     const { name, email, phoneNumber, address, userId } = body;
@@ -61,6 +62,6 @@ export async function POST(req: NextRequest) {
 }
 
 // Handle other methods
-export async function handler(req: NextRequest) {
+export async function handler(req) {
   return new NextResponse(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
 }
