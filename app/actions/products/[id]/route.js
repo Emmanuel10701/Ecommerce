@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '../../../../libs/prismadb'; // Adjust the path as needed
 
 // GET request to fetch a single product by ID
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request, { params }) {
   const { id } = params;
 
   try {
@@ -22,7 +22,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 }
 
 // PUT request to update a product by ID
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request, { params }) {
   const { id } = params;
   const data = await request.json();
 
@@ -40,7 +40,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 }
 
 // DELETE request to remove a product by ID
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request, { params }) {
   const { id } = params;
 
   try {
