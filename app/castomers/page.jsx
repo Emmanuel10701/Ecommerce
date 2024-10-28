@@ -14,21 +14,12 @@ import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
 
-interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  userId: string;
-  role: string;
-}
 
 const PAGE_SIZE = 10;
 
-const CustomerPage: React.FC = () => {
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
+const CustomerPage = () => {
+  const [customers, setCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,14 +31,14 @@ const CustomerPage: React.FC = () => {
   const [emailBody, setEmailBody] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const dropdownRef = useRef(null);
+  const modalRef = useRef(null);
   const router = useRouter();
 
   // Authentication
   const { data: session, status } = useSession();
-  
+
   const handleLogin = () => {
     router.push("/login");
   };
@@ -69,7 +60,7 @@ const CustomerPage: React.FC = () => {
   const fetchCustomers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/castomers');
+      const response = await axios.get('/api/customers');
       setCustomers(response.data);
       setTotalPages(Math.ceil(response.data.length / PAGE_SIZE));
       setFilteredCustomers(response.data.slice(0, PAGE_SIZE));
@@ -100,22 +91,19 @@ const CustomerPage: React.FC = () => {
     }
   };
 
-
-
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target )) {
         setDropdownOpen(false);
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  
 
   const sendEmailContent = async () => {
     try {
@@ -135,7 +123,7 @@ const CustomerPage: React.FC = () => {
   };
 
   const exportToPDF = () => {
-    const docDefinition: TDocumentDefinitions = {
+    const docDefinition = {
       content: [
         { text: 'Customers Report', style: 'header' },
         {
@@ -200,7 +188,7 @@ const CustomerPage: React.FC = () => {
     fetchCustomers().finally(() => setIsRefreshing(false));
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
     const filtered = customers.filter(customer =>
       customer.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -210,30 +198,28 @@ const CustomerPage: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleRowClick = (customer: Customer) => {
+  const handleRowClick = (customer) => {
     setSelectedCustomer(customer);
     setIsDetailModalOpen(true);
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page) => {
     const startIndex = (page - 1) * PAGE_SIZE;
     const endIndex = page * PAGE_SIZE;
     setFilteredCustomers(customers.slice(startIndex, endIndex));
     setCurrentPage(page);
   };
 
-  const handleDeleteCustomer = async (id: string) => {
+  const handleDeleteCustomer = async (id) => {
     try {
-      await axios.delete(`/api/castomers/${id}`);
+      await axios.delete(`/api/customers/${id}`);
       toast.success('Customer deleted successfully!');
-      // Refresh customer list or remove customer from state
       fetchCustomers();
     } catch (error) {
       console.error('Failed to delete customer:', error);
       toast.error('Failed to delete customer.');
     }
   };
-  
 
   if (!session) {
     return (
@@ -267,41 +253,39 @@ const CustomerPage: React.FC = () => {
                 placeholder="Search by name"
                 className="p-2 border border-gray-300 focus:outline-1 focus:bg-slate-100 rounded-md"
               />
-              <div className="hidden md:flex items-center  space-x-4">
-  <button
-    onClick={() => setDropdownOpen(!dropdownOpen)}
-    className="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition duration-300 flex items-center"
-  >
-    <FaEllipsisV />
-  </button>
-  {dropdownOpen && (
-  <div
-    ref={dropdownRef}
-    className="absolute right-0 mt-2 bg-white border rounded shadow-lg w-48"
-  >
-    <button
-      onClick={handleRefresh}
-      className="w-full text-left px-4 py-2 hover:bg-blue-100 transition duration-300"
-    >
-      {isRefreshing ? 'Refreshing...' : 'Refresh'}
-    </button>
-    <button
-      onClick={handleEmailAll}
-      className="w-full text-left px-4 py-2 hover:bg-blue-100 transition duration-300"
-    >
-      Send Email
-    </button>
-    <button
-      onClick={exportToPDF}
-      className="w-full text-left px-4 py-2 hover:bg-blue-100 transition duration-300"
-    >
-      Export to PDF
-    </button>
-  </div>
-)}
-
-</div>
-
+              <div className="hidden md:flex items-center space-x-4">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition duration-300 flex items-center"
+                >
+                  <FaEllipsisV />
+                </button>
+                {dropdownOpen && (
+                  <div
+                    ref={dropdownRef}
+                    className="absolute right-0 mt-2 bg-white border rounded shadow-lg w-48"
+                  >
+                    <button
+                      onClick={handleRefresh}
+                      className="w-full text-left px-4 py-2 hover:bg-blue-100 transition duration-300"
+                    >
+                      {isRefreshing ? 'Refreshing...' : 'Refresh'}
+                    </button>
+                    <button
+                      onClick={handleEmailAll}
+                      className="w-full text-left px-4 py-2 hover:bg-blue-100 transition duration-300"
+                    >
+                      Send Email
+                    </button>
+                    <button
+                      onClick={exportToPDF}
+                      className="w-full text-left px-4 py-2 hover:bg-blue-100 transition duration-300"
+                    >
+                      Export to PDF
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -322,37 +306,34 @@ const CustomerPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-  {filteredCustomers.map((customer, index) => (
-    <tr
-      key={customer.id}
-      onClick={() => handleRowClick(customer)}
-      className={`cursor-pointer hover:bg-blue-100 ${
-        index % 2 === 0 ? 'bg-blue-50' : 'bg-blue-100'
-      }`}
-    >
-      <td className="p-2">{customer.name}</td>
-      <td className="p-2">{customer.email}</td>
-      <td className="p-2">{customer.phoneNumber}</td>
-      <td className="p-2">{customer.address}</td>
-      <td className="p-2">{customer.userId}</td>
-      <td className="p-2">{customer.role}</td>
-      {isAdmin && (
-        <td className="p-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering row click
-              handleDeleteCustomer(customer.id);
-            }}
-            className="text-red-500 hover:text-red-700 transition duration-300"
-          >
-            <FaTrash />
-          </button>
-        </td>
-      )}
-    </tr>
-  ))}
-</tbody>
-
+                  {filteredCustomers.map((customer, index) => (
+                    <tr
+                      key={customer.id}
+                      onClick={() => handleRowClick(customer)}
+                      className={`cursor-pointer hover:bg-blue-100 ${index % 2 === 0 ? 'bg-blue-50' : 'bg-blue-100'}`}
+                    >
+                      <td className="p-2">{customer.name}</td>
+                      <td className="p-2">{customer.email}</td>
+                      <td className="p-2">{customer.phoneNumber}</td>
+                      <td className="p-2">{customer.address}</td>
+                      <td className="p-2">{customer.userId}</td>
+                      <td className="p-2">{customer.role}</td>
+                      {isAdmin && (
+                        <td className="p-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent triggering row click
+                              handleDeleteCustomer(customer.id);
+                            }}
+                            className="text-red-500 hover:text-red-700 transition duration-300"
+                          >
+                            <FaTrash />
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           )}

@@ -1,27 +1,17 @@
-// app/customers/[id]/page.tsx
+'use client';
 
 import { notFound } from 'next/navigation';
 import React from 'react';
 
-interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  userId: string;
-  role: string;
-}
-
-const fetchCustomer = async (id: string): Promise<Customer> => {
-  const res = await fetch(`http://localhost:3000/api/castomers/${id}`);
+const fetchCustomer = async (id) => {
+  const res = await fetch(`http://localhost:3000/api/customers/${id}`);
   if (!res.ok) {
     throw new Error('Failed to fetch customer');
   }
   return res.json();
 };
 
-const CustomerPage = async ({ params }: { params: { id: string } }) => {
+const CustomerPage = async ({ params }) => {
   const { id } = params;
 
   try {
