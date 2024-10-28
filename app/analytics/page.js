@@ -11,32 +11,9 @@ import LoadingSpinner from '../../components/spinner/page'; // Import the spinne
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import ChartGridComponent from '../../components/chartgrid2/page'; // Import the ChartGridComponent
-import { TDocumentDefinitions } from 'pdfmake/interfaces'; // Import the TDocumentDefinitions type
-
-// Define data types
-interface AreaChartData {
-  name: string;
-  uv: number;
-}
-
-interface HistogramData {
-  name: string;
-  value: number;
-}
-
-interface CardData {
-  id: number;
-  title: string;
-  content: string;
-  bgColor: string;
-  icon: React.ReactNode;
-}
-
-// Define the Margins type manually if it's not available in types
-type Margins = [number, number, number, number];
 
 // Sample data for charts
-const areaChartData: AreaChartData[] = [
+const areaChartData = [
   { name: 'Page A', uv: 4000 },
   { name: 'Page B', uv: 3000 },
   { name: 'Page C', uv: 2000 },
@@ -46,7 +23,7 @@ const areaChartData: AreaChartData[] = [
   { name: 'Page G', uv: 3490 },
 ];
 
-const histogramData: HistogramData[] = [
+const histogramData = [
   { name: 'A', value: 4000 },
   { name: 'B', value: 3000 },
   { name: 'C', value: 2000 },
@@ -57,15 +34,15 @@ const histogramData: HistogramData[] = [
 ];
 
 // Main component
-const MainComponent: React.FC = () => {
+const MainComponent = () => {
   const { data: session, status } = useSession();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false); // Add this state
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const cards: CardData[] = [
+  const cards = [
     { id: 1, title: 'Sales', content: 'Total sales this month.', bgColor: 'bg-green-500', icon: <FaDollarSign /> },
     { id: 2, title: 'Total Income', content: 'Total income for the period.', bgColor: 'bg-blue-500', icon: <FaChartLine /> },
     { id: 3, title: 'Revenue', content: 'Total revenue generated.', bgColor: 'bg-purple-400', icon: <FaBriefcase /> },
@@ -78,16 +55,15 @@ const MainComponent: React.FC = () => {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    setLoading(true); // Set loading to true when refreshing
+    setLoading(true);
     setTimeout(() => {
       router.refresh();
       setIsRefreshing(false);
-      setLoading(false); // Reset loading after refreshing
+      setLoading(false);
     }, 1000);
   };
 
   const generateChartDescriptions = () => {
-    // Generate descriptions for area and histogram charts
     const areaChartDescription = areaChartData.map(data => `${data.name}: ${data.uv}`).join(', ');
     const histogramDescription = histogramData.map(data => `${data.name}: ${data.value}`).join(', ');
 
@@ -97,7 +73,7 @@ const MainComponent: React.FC = () => {
   const exportToPDF = () => {
     const { areaChartDescription, histogramDescription } = generateChartDescriptions();
   
-    const docDefinition: TDocumentDefinitions = {
+    const docDefinition = {
       content: [
         { text: 'Dashboard Report', style: 'header' },
         {
@@ -113,7 +89,7 @@ const MainComponent: React.FC = () => {
             text: `${card.title}: ${card.content} - $50,000`,
             style: 'listItem',
           })),
-          margin: [0, 5, 0, 15] as Margins,
+          margin: [0, 5, 0, 15],
         },
         {
           text: 'Charts Information:',
@@ -121,12 +97,12 @@ const MainComponent: React.FC = () => {
         },
         {
           text: `Area Chart Data: ${areaChartDescription}`,
-          margin: [0, 5, 0, 15] as Margins,
+          margin: [0, 5, 0, 15],
           style: 'chartInfo',
         },
         {
           text: `Histogram Data: ${histogramDescription}`,
-          margin: [0, 5, 0, 15] as Margins,
+          margin: [0, 5, 0, 15],
           style: 'chartInfo',
         },
       ],
@@ -134,32 +110,32 @@ const MainComponent: React.FC = () => {
         header: {
           fontSize: 22,
           bold: true,
-          color: '#00796b', // Teal color
-          margin: [0, 0, 0, 10] as Margins,
+          color: '#00796b',
+          margin: [0, 0, 0, 10],
         },
         intro: {
           fontSize: 12,
-          margin: [0, 0, 0, 20] as Margins,
-          color: '#555', // Dark gray
+          margin: [0, 0, 0, 20],
+          color: '#555',
         },
         subheader: {
           fontSize: 18,
           bold: true,
-          color: '#004d40', // Darker teal color
-          margin: [0, 20, 0, 10] as Margins,
+          color: '#004d40',
+          margin: [0, 20, 0, 10],
         },
         listItem: {
           fontSize: 12,
-          color: '#333', // Dark gray
+          color: '#333',
         },
         chartInfo: {
           fontSize: 12,
-          color: '#333', // Dark gray
+          color: '#333',
         },
       },
-      pageMargins: [40, 60, 40, 60], // Custom margins for better layout
+      pageMargins: [40, 60, 40, 60],
       defaultStyle: {
-        font: 'Roboto', // Ensure this is available or use a standard font
+        font: 'Roboto',
       },
     };
   
@@ -177,6 +153,7 @@ const MainComponent: React.FC = () => {
       </div>
     );
   }
+  
   if (!session) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -186,7 +163,7 @@ const MainComponent: React.FC = () => {
           <button 
             onClick={handleLogin} 
             className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-            disabled={isProcessing} // Disable button while processing
+            disabled={isProcessing}
           >
             {isProcessing ? 'Processing...' : 'Go to Login Page'}
           </button>
@@ -194,6 +171,7 @@ const MainComponent: React.FC = () => {
       </div>
     );
   }
+  
   return (
     <div className="relative flex h-screen">
       {/* Sidebar */}
@@ -202,9 +180,7 @@ const MainComponent: React.FC = () => {
       {/* Main Content */}
       <main
         id="capture"
-        className={`flex-1 p-4 bg-gray-100 overflow-y-auto md:ml-64 transition-transform duration-300 ${
-          isSidebarOpen ? 'ml-0 md:ml-[25%]' : 'ml-0'
-        }`}
+        className={`flex-1 p-4 bg-gray-100 overflow-y-auto md:ml-64 transition-transform duration-300 ${isSidebarOpen ? 'ml-0 md:ml-[25%]' : 'ml-0'}`}
         style={{
           marginLeft: isSidebarOpen ? '0' : '22%',
           width: isSidebarOpen ? 'calc(100% - 25%)' : '100%'
@@ -235,9 +211,7 @@ const MainComponent: React.FC = () => {
           {cards.map((card, index) => (
             <div
               key={card.id}
-              className={`p-4 border rounded-lg ${card.bgColor} text-white flex flex-col items-start justify-between ${
-                index < 4 ? 'h-[150px] sm:h-[170px] lg:h-[200px]' : 'h-[200px] sm:h-[220px] lg:h-[250px]'
-              }`}
+              className={`p-4 border rounded-lg ${card.bgColor} text-white flex flex-col items-start justify-between ${index < 4 ? 'h-[150px] sm:h-[170px] lg:h-[200px]' : 'h-[200px] sm:h-[220px] lg:h-[250px]'}`}
             >
               <header className="flex items-center mb-2">
                 <span className="text-2xl mr-2">{card.icon}</span>
@@ -279,8 +253,9 @@ const MainComponent: React.FC = () => {
             </BarChart>
           </div>
         </div>
+        
         <div className='flex flex-1 flex-wrap gap-2 sm:flex-col'>
-         <ChartGridComponent />
+          <ChartGridComponent />
         </div>
       </main>
     </div>
