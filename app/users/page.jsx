@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
@@ -10,23 +10,14 @@ import Sidebar from '../../components/sidebar/page';
 import { FaSync, FaEnvelope, FaFilePdf, FaEllipsisV, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-  role: string;
-}
-
 const PAGE_SIZE = 10;
 
-const UsersPage: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+const UsersPage = () => {
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,14 +27,10 @@ const UsersPage: React.FC = () => {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [emailSubject, setEmailSubject] = useState('');
   const [emailBody, setEmailBody] = useState('');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-  const [emails, setEmails] = useState(['']);
-  const [responseMessage, setResponseMessage] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isAccessDeniedModalOpen, setIsAccessDeniedModalOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef(null);
+  const modalRef = useRef(null);
   const router = useRouter();
 
   // Authentication
@@ -58,12 +45,12 @@ const UsersPage: React.FC = () => {
       setLoading(true);
       return;
     }
-    
+
     if (!session) {
       setLoading(false);
       return;
     }
-    
+
     setLoading(false);
   }, [session, status]);
 
@@ -77,15 +64,15 @@ const UsersPage: React.FC = () => {
     setLoading(true);
     try {
       const response = await axios.get('/api/register');
-      const usersData = response.data.data; // Access the data field
+      const usersData = response.data.data;
       if (Array.isArray(usersData)) {
         setUsers(usersData);
-        setFilteredUsers(usersData.slice(0, PAGE_SIZE)); // Set initial page data
-        setTotalPages(Math.ceil(usersData.length / PAGE_SIZE)); // Update total pages
+        setFilteredUsers(usersData.slice(0, PAGE_SIZE));
+        setTotalPages(Math.ceil(usersData.length / PAGE_SIZE));
       } else {
         console.error('Unexpected response format');
         setFilteredUsers([]);
-        setTotalPages(0); // Reset total pages
+        setTotalPages(0);
       }
     } catch (error) {
       console.error(error);
@@ -95,7 +82,6 @@ const UsersPage: React.FC = () => {
     }
   };
 
-  // Handle email modal and actions
   const handleEmailAll = () => {
     if (session?.user?.role !== 'ADMIN') {
       setIsAccessDeniedModalOpen(true);
@@ -115,18 +101,15 @@ const UsersPage: React.FC = () => {
       toast.success('Email sent successfully!');
       setIsEmailModalOpen(false);
       setEmailSubject('');
-      console.log(emails)
       setEmailBody('');
     } catch (error) {
       console.error(error);
       toast.error('Failed to send email.');
-      console.log(emails)
-
     }
   };
 
   const exportToPDF = () => {
-    const docDefinition: TDocumentDefinitions = {
+    const docDefinition = {
       content: [
         { text: 'Users Report', style: 'header' },
         {
@@ -178,19 +161,18 @@ const UsersPage: React.FC = () => {
         font: 'Roboto',
       },
     };
-  
+
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     pdfMake.createPdf(docDefinition).download('users_report.pdf');
     setDropdownOpen(false);
   };
-  
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     fetchUsers().finally(() => setIsRefreshing(false));
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (event) => {
     const searchValue = event.target.value;
     setSearchTerm(searchValue);
     const filtered = users.filter(user =>
@@ -201,7 +183,7 @@ const UsersPage: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page) => {
     const startIndex = (page - 1) * PAGE_SIZE;
     const endIndex = page * PAGE_SIZE;
     setFilteredUsers(users.slice(startIndex, endIndex));
@@ -209,8 +191,8 @@ const UsersPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
         setIsEmailModalOpen(false);
       }
     };
@@ -323,21 +305,20 @@ const UsersPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {filteredUsers.map((user, index) => (
-                  <tr
-                    key={user.id}
-                    className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-green-50' : 'bg-green-100'}`}
-                  >
-                    <td className="border-b border-gray-300 p-3 text-sm font-bold">{user.name}</td>
-                    <td className="border-b border-gray-300 p-3 text-sm font-medium">{user.email}</td>
-                    <td className="border-b border-gray-300 p-3 text-sm font-medium">{moment(user.createdAt).format('YYYY-MM-DD')}</td>
-                    <td className={`border-b border-gray-300 p-3 text-sm font-extrabold ${user.role === 'Admin' ? 'text-green-800 bg-green-100' : 'text-gray-800'}`}>
-                      {user.role}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-
+                  {filteredUsers.map((user, index) => (
+                    <tr
+                      key={user.id}
+                      className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-green-50' : 'bg-green-100'}`}
+                    >
+                      <td className="border-b border-gray-300 p-3 text-sm font-bold">{user.name}</td>
+                      <td className="border-b border-gray-300 p-3 text-sm font-medium">{user.email}</td>
+                      <td className="border-b border-gray-300 p-3 text-sm font-medium">{moment(user.createdAt).format('YYYY-MM-DD')}</td>
+                      <td className={`border-b border-gray-300 p-3 text-sm font-extrabold ${user.role === 'Admin' ? 'text-green-800 bg-green-100' : 'text-gray-800'}`}>
+                        {user.role}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
 
               {totalPages > 1 && (
