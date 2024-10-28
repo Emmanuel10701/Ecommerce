@@ -9,31 +9,26 @@ import { useRouter } from 'next/navigation';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../../context/page';
 
-export interface Link {
-  name: string;
-  href: string;
-}
-
-const LINKS: Link[] = [
+const LINKS = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
   { name: 'Contact', href: '/contact' },
   { name: 'Admin', href: '/productstable' },
 ];
 
-const Navbar: React.FC<{ onSearch: (query: string) => void }> = ({ onSearch }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [isCartDropdownOpen, setIsCartDropdownOpen] = useState<boolean>(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+const Navbar = ({ onSearch }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
+  const menuRef = useRef(null);
   const navigate = useRouter();
   const path = usePathname();
 
   const { state: cartState } = useCart();
   const items = cartState?.items || [];
 
-  const totalItems = items.reduce<number>((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce<number>((sum, item) => sum + item.price * item.quantity, 0);
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const cartNavigation = () => {
     setIsCartDropdownOpen(false);
@@ -48,7 +43,7 @@ const Navbar: React.FC<{ onSearch: (query: string) => void }> = ({ onSearch }) =
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
     const savedProfileImage = localStorage.getItem('profileImage');
@@ -56,8 +51,8 @@ const Navbar: React.FC<{ onSearch: (query: string) => void }> = ({ onSearch }) =
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
     };
