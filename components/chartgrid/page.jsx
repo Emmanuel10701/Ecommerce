@@ -1,24 +1,9 @@
+// components/Chartgrid.jsx
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { BarChart, Bar } from 'recharts';
 
-// Define the data types
-interface AreaChartData {
-  name: string;
-  uv: number;
-}
-
-interface HistogramData {
-  name: string;
-  value: number;
-}
-
-interface ChartgridProps {
-  areaChartData: AreaChartData[];
-  histogramData: HistogramData[];
-}
-
-const Chartgrid: React.FC<ChartgridProps> = ({ areaChartData, histogramData }) => {
+const Chartgrid = ({ areaChartData, histogramData }) => {
   return (
     <div className="p-4 rounded-lg shadow-md">
       <div className="flex flex-wrap justify-center gap-8">
