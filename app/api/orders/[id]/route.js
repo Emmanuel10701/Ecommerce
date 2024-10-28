@@ -1,7 +1,8 @@
+// pages/api/orders/[id].js
 import prisma from '../../../../libs/prismadb';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
+export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const orderId = searchParams.get('id'); // Get order ID from query params
 
@@ -17,12 +18,12 @@ export async function GET(req: Request) {
         }
 
         return NextResponse.json(order);
-    } catch (error: any) {
+    } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req) {
     const { searchParams } = new URL(req.url);
     const orderId = searchParams.get('id'); // Get order ID from query params
 
@@ -46,7 +47,7 @@ export async function DELETE(req: Request) {
         });
 
         return NextResponse.json({ message: 'Order deleted successfully' }, { status: 200 });
-    } catch (error: any) {
+    } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
