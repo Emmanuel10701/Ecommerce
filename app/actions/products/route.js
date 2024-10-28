@@ -3,23 +3,23 @@ import prisma from '../../../libs/prismadb'; // Adjust the path as needed
 import path from 'path';
 import fs from 'fs';
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const formData = await request.formData();
-    const name = formData.get('name') as string;
-    const description = formData.get('description') as string;
-    const price = formData.get('price') as string;
-    const oldPrice = formData.get('oldPrice') as string | undefined;
-    const quantity = formData.get('quantity') as string | null;
-    const category = formData.get('category') as string | undefined; // Ensure this is correct
-    const ratings = formData.get('ratings') as string;
-    const imageFile = formData.get('image') as File | null;
+    const name = formData.get('name');
+    const description = formData.get('description');
+    const price = formData.get('price');
+    const oldPrice = formData.get('oldPrice');
+    const quantity = formData.get('quantity');
+    const category = formData.get('category');
+    const ratings = formData.get('ratings');
+    const imageFile = formData.get('image');
 
     if (!name || !description || !price || !ratings || !quantity || !category) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    let imageUrl: string | null = null;
+    let imageUrl = null;
     if (imageFile) {
       try {
         const uploadDir = path.join(process.cwd(), 'public/uploads');
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
         fs.writeFileSync(filePath, buffer);
         imageUrl = `/uploads/${imageFile.name}`;
-      } catch (fileError: any) {
+      } catch (fileError) {
         console.error('File upload error:', fileError.message);
         return NextResponse.json({ error: 'File upload failed' }, { status: 500 });
       }
@@ -47,17 +47,17 @@ export async function POST(request: Request) {
           oldPrice: oldPrice ? parseFloat(oldPrice) : null,
           quantity: quantity ? parseInt(quantity) : null,
           ratings: parseFloat(ratings),
-          category, // Ensure this matches your Prisma schema
+          category,
           image: imageUrl,
         },
       });
 
       return NextResponse.json(newProduct);
-    } catch (dbError: any) {
+    } catch (dbError) {
       console.error('Database operation error:', dbError.message);
       return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error('Unexpected error:', error.message);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
@@ -68,12 +68,12 @@ export async function GET() {
   try {
     const products = await prisma.product.findMany({
       orderBy: {
-        createdAt: 'desc', // Order products by `createdAt` field in descending order
+        createdAt: 'desc',
       },
     });
 
     return NextResponse.json(products);
-  } catch (dbError: any) {
+  } catch (dbError) {
     console.error('Database operation error:', dbError.message);
     return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
   }
