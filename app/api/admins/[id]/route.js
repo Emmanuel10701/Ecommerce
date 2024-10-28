@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../libs/prismadb';
 
 // GET request: Retrieve a single admin by ID
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 }
 
 // PUT request: Update an admin by ID
-export async function PUT(req: NextRequest) {
+export async function PUT(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
   const body = await req.json();
@@ -69,7 +69,7 @@ export async function PUT(req: NextRequest) {
 }
 
 // DELETE request: Delete an admin by ID
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -92,7 +92,7 @@ export async function DELETE(req: NextRequest) {
     });
 
     return NextResponse.json(deletedAdmin);
-  } catch (error:any) {
+  } catch (error) {
     console.error('Error deleting admin:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error deleting admin', details: error.message }),
