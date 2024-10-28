@@ -1,24 +1,8 @@
-// pages/api/orders/route.ts
-
+// pages/api/orders.js
 import prisma from '../../../libs/prismadb';
 import { NextResponse } from 'next/server';
 
-interface OrderRequestBody {
-    name: string;
-    email: string;
-    address: string;
-    city: string;
-    zip: string;
-    customerId: string;
-    orderItems: {
-        productId: string;
-        quantity: number;
-        price: number;
-    }[];
-    total: number;
-    paymentMethod: string;
-}
-
+// POST request body interface is not required in JavaScript
 // GET request: Retrieve all orders
 export async function GET() {
     try {
@@ -29,13 +13,13 @@ export async function GET() {
             },
         });
         return NextResponse.json(orders);
-    } catch (error: any) {
+    } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
 
 // POST request: Create a new order
-export async function POST(req: Request) {
+export async function POST(req) {
     const {
         name,
         email,
@@ -46,7 +30,7 @@ export async function POST(req: Request) {
         orderItems,
         total,
         paymentMethod,
-    }: OrderRequestBody = await req.json();
+    } = await req.json();
 
     // Validation: Ensure required fields are provided
     if (!name || !email || !address || !customerId || !orderItems || orderItems.length === 0) {
@@ -64,7 +48,6 @@ export async function POST(req: Request) {
                 customerId,
                 total,
                 paymentMethod,
-                items: orderItems, // Assuming items is a JSON field
                 orderItems: {
                     create: orderItems.map(item => ({
                         productId: item.productId,
@@ -75,7 +58,7 @@ export async function POST(req: Request) {
             },
         });
         return NextResponse.json(order, { status: 201 });
-    } catch (error: any) {
+    } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
