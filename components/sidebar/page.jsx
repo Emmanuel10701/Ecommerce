@@ -1,4 +1,4 @@
-"use client";
+// src/components/sidebar/Sidebar.js
 import React from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -6,45 +6,32 @@ import { usePathname } from 'next/navigation';
 import { FaHome, FaShoppingCart, FaCalendarAlt, FaReceipt, FaCog, FaUsers, FaBox, FaTimes, FaBars } from 'react-icons/fa';
 import crypto from 'crypto';
 
-interface SidebarProps {
-  className?: string;
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface NavItem {
-  path: string;
-  label: string;
-  badge?: number;
-  icon: React.ReactNode;
-}
-
-const generateColorFromString = (str: string) => {
+const generateColorFromString = (str) => {
   const hash = crypto.createHash('md5').update(str).digest('hex');
   return `#${hash.slice(0, 6)}`;
 };
 
-const NAV_ITEMS: NavItem[] = [
+const NAV_ITEMS = [
   { path: '/analytics', label: 'Dashboard', icon: <FaHome className="text-blue-500" /> },
   { path: '/employees', label: 'Employees', icon: <FaUsers className="text-green-500" /> },
-  { path: '/castomers', label: 'Customers', icon: <FaUsers className="text-green-900" /> },
+  { path: '/customers', label: 'Customers', icon: <FaUsers className="text-green-900" /> },
   { path: '/productstable', label: 'Products', icon: <FaBox className="text-green-500" /> },
   { path: '/users', label: 'Users', icon: <FaUsers className="text-green-900" /> },
   { path: '/calender', label: 'Calendar', icon: <FaCalendarAlt className="text-purple-500" /> },
   { path: '/settingPage', label: 'Settings', icon: <FaCog className="text-gray-500" /> },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ className, isOpen, setIsOpen }) => {
+const Sidebar = ({ className, isOpen, setIsOpen }) => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
 
-  const getLinkClassName = (path: string) =>
+  const getLinkClassName = (path) =>
     `flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 group ${
       path === pathname ? 'bg-gray-100 dark:bg-gray-700' : 'hover:bg-slate-200 dark:hover:bg-gray-700'
     }`;
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path) => {
     setIsOpen(false);
     router.push(path);
   };
@@ -91,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className, isOpen, setIsOpen }) => {
           </div>
           <div className="flex-1 overflow-y-auto no-scrollbar">
             <ul className="p-3 space-y-2">
-              {NAV_ITEMS.map(({ path, label, badge, icon }) => (
+              {NAV_ITEMS.map(({ path, label, icon }) => (
                 <li key={path}>
                   <a
                     href="#"
@@ -105,11 +92,6 @@ const Sidebar: React.FC<SidebarProps> = ({ className, isOpen, setIsOpen }) => {
                       <span className="text-base mr-3">{icon}</span>
                       <span className="flex-1 text-left whitespace-nowrap">{label}</span>
                     </span>
-                    {badge !== undefined && (
-                      <span className="inline-flex justify-center items-center w-5 h-5 text-xs font-semibold rounded-full text-primary-800 bg-primary-100 dark:bg-primary-200 dark:text-primary-800 ml-3">
-                        {badge}
-                      </span>
-                    )}
                   </a>
                 </li>
               ))}
