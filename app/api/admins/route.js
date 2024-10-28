@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import prisma from '../../../libs/prismadb'; // Adjust the path if needed
 
 // Handle POST request
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const body = await req.json();
     const { name, userId } = body;
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     // Validate required fields
     if (!name || !userId) {
       return new NextResponse(
-        JSON.stringify({ error: 'Name and userId are required' }), 
+        JSON.stringify({ error: 'Name and userId are required' }),
         { status: 400 }
       );
     }
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     if (!user) {
       return new NextResponse(
-        JSON.stringify({ error: 'User not found' }), 
+        JSON.stringify({ error: 'User not found' }),
         { status: 404 }
       );
     }
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     // Check if the user is already an admin
     if (user.role === 'ADMIN') {
       return new NextResponse(
-        JSON.stringify({ error: 'User is already an admin' }), 
+        JSON.stringify({ error: 'User is already an admin' }),
         { status: 400 }
       );
     }
@@ -57,17 +57,17 @@ export async function POST(req: NextRequest) {
       email: newAdmin.user.email,
       role: newAdmin.user.role,
     }, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating admin:', error);
     return new NextResponse(
-      JSON.stringify({ error: 'Error creating admin', details: error.message }), 
+      JSON.stringify({ error: 'Error creating admin', details: error.message }),
       { status: 500 }
     );
   }
 }
 
 // Handle GET request
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
 
       if (!admin) {
         return new NextResponse(
-          JSON.stringify({ error: 'Admin not found' }), 
+          JSON.stringify({ error: 'Admin not found' }),
           { status: 404 }
         );
       }
@@ -103,10 +103,10 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json(admins);
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching admins:', error);
     return new NextResponse(
-      JSON.stringify({ error: 'Error fetching admins', details: error.message }), 
+      JSON.stringify({ error: 'Error fetching admins', details: error.message }),
       { status: 500 }
     );
   }
