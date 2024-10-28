@@ -8,17 +8,6 @@ import { CircularProgress } from "@mui/material";
 import Sidebar from "../../components/Psidebar/page"; // Adjust the path as necessary
 import Card from "../../components/card/page"; // Adjust the path to Card component
 
-interface Product {
-  id: string; // Use string for id to match Card component
-  name: string;
-  description: string;
-  price: number;
-  oldPrice?: number;
-  image?: string; // Ensure consistency with Card component
-  rating?: number;
-  category: string;
-}
-
 const categories = [
   "Accessories",
   "Groceries",
@@ -27,17 +16,17 @@ const categories = [
   "Kids",
 ];
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Start with loading true
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     price: "",
-    categorys: {} as Record<string, boolean>, // Initialize as an empty Record
+    categorys: {},
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -53,19 +42,19 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setIsLoading(true); // Set loading true when fetching
+      setIsLoading(true);
       try {
-        const response = await fetch("/actions/products"); // Path from public folder
+        const response = await fetch("/actions/products");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data: Product[] = await response.json();
+        const data = await response.json();
         setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
         setError("Failed to load products.");
       } finally {
-        setIsLoading(false); // Ensure loading is false after fetching
+        setIsLoading(false);
       }
     };
 
@@ -85,7 +74,7 @@ const HomePage: React.FC = () => {
     setTimeout(() => setIsLoading(false), 1000);
   };
 
-  const handleFilterChange = (newFilterState: { price: string; categorys: Record<string, boolean> }) => {
+  const handleFilterChange = (newFilterState) => {
     setFilters(newFilterState);
   };
 
@@ -112,7 +101,7 @@ const HomePage: React.FC = () => {
     return result;
   });
 
-  const handleCategoryClick = (category: string | null) => {
+  const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     window.scrollTo({
       top: document.documentElement.scrollHeight,
