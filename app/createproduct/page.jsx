@@ -7,39 +7,28 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 
-interface FormData {
-  name: string;
-  description: string;
-  price: number;
-  oldPrice?: number;
-  ratings?: number;
-  image: File | null;
-  quantity?: number; // Made optional
-  category: string;
-}
-
 const CreateProduct = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: 0,
     oldPrice: undefined,
     ratings: undefined,
     image: null,
-    quantity: undefined, // Set to undefined initially
+    quantity: undefined,
     category: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [error, setError] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [showAccessDenied, setShowAccessDenied] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, type, value, files } = e.target as HTMLInputElement;
-    
+  const handleChange = (e) => {
+    const { name, type, value, files } = e.target;
+
     if (type === 'file') {
       if (files && files[0]) {
         const file = files[0];
@@ -59,7 +48,7 @@ const CreateProduct = () => {
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -86,11 +75,11 @@ const CreateProduct = () => {
       if (formData.image) form.append('image', formData.image);
       form.append('category', formData.category);
       if (formData.quantity !== undefined) form.append('quantity', formData.quantity.toString());
-  
+
       const response = await axios.post('/actions/products', form, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-  
+
       if (response.status === 200) {
         toast.success('Product created successfully!');
         setFormData({
@@ -107,7 +96,7 @@ const CreateProduct = () => {
       } else {
         toast.error(response.data.error || 'Failed to create product.');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error creating product:', error.message || error);
       toast.error(error.response?.data?.error || 'Failed to create product.');
     } finally {
@@ -157,11 +146,10 @@ const CreateProduct = () => {
         className="p-8 bg-white rounded-lg shadow-lg w-full max-w-4xl border border-gray-200"
         onSubmit={handleSubmit}
       >
-      
         <h1 className="text-3xl my-10 text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
           Create New Product
         </h1>
-    
+
         {error && <p className="text-red-600 mb-4">{error}</p>}
 
         <div className="flex flex-col md:flex-row md:space-x-4">
