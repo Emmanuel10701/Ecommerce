@@ -1,3 +1,4 @@
+// pages/api/forgot-password.js
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import prisma from '../../../libs/prismadb'; // Adjust the path as needed
@@ -11,7 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function POST(req: Request) {
+export async function POST(req) {
   const { email } = await req.json();
 
   try {
