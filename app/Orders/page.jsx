@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
@@ -6,39 +6,31 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSession } from 'next-auth/react';
 import LoadingSpinner from '../../components/spinner/page'; 
-import Sidebar from '../../components/sidebar/page'; // Import Sidebar
+import Sidebar from '../../components/sidebar/page'; 
 import moment from 'moment';
-import { FaSync, FaFilePdf, FaEllipsisV } from 'react-icons/fa'; // Import additional icons
+import { FaSync, FaFilePdf, FaEllipsisV } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces'; // Import TDocumentDefinitions
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
-// Define the Order type
-interface Order {
-  id: number;
-  customerName: string;
-  amount: number;
-  datePlaced: string; // Assuming date is in ISO format
-}
 const router = useRouter();
 
-const PAGE_SIZE = 10; // Number of items per page
+const PAGE_SIZE = 10;
 
-const OrdersPage: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [totalOrders, setTotalOrders] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+const OrdersPage = () => {
+  const [orders, setOrders] = useState([]);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const { data: session, status } = useSession();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Add loading state
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown menu
-  const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown
+  const [loading, setLoading] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  // Function to fetch orders
-  const fetchOrders = async (page: number, retries = 3) => {
+  const fetchOrders = async (page, retries = 3) => {
     try {
       setLoading(true);
       const response = await axios.get("/api/orders");
@@ -47,7 +39,6 @@ const OrdersPage: React.FC = () => {
     } catch (error) {
       console.error('Error fetching orders:', error);
       if (retries > 0) {
-        // Retry the request
         fetchOrders(page, retries - 1);
       } else {
         if (axios.isAxiosError(error)) {
@@ -61,15 +52,14 @@ const OrdersPage: React.FC = () => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchOrders(currentPage);
   }, [currentPage]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
     };
@@ -80,9 +70,8 @@ const OrdersPage: React.FC = () => {
     };
   }, []);
 
-  // Function to generate and download PDF
   const exportToPDF = () => {
-    const docDefinition: TDocumentDefinitions = {
+    const docDefinition = {
       content: [
         { text: 'Orders Report', style: 'header' },
         {
@@ -113,24 +102,24 @@ const OrdersPage: React.FC = () => {
         header: {
           fontSize: 22,
           bold: true,
-          color: '#00796b', // Teal color
+          color: '#00796b',
           margin: [0, 0, 0, 10],
         },
         intro: {
           fontSize: 12,
           margin: [0, 0, 0, 20],
-          color: '#555', // Dark gray
+          color: '#555',
         },
         subheader: {
           fontSize: 18,
           bold: true,
-          color: '#004d40', // Darker teal color
+          color: '#004d40',
           margin: [0, 20, 0, 10],
         },
       },
-      pageMargins: [40, 60, 40, 60], // Custom margins for better layout
+      pageMargins: [40, 60, 40, 60],
       defaultStyle: {
-        font: 'Roboto', // Ensure this is available or use a standard font
+        font: 'Roboto',
       },
     };
 
@@ -139,25 +128,23 @@ const OrdersPage: React.FC = () => {
     setDropdownOpen(false);
   };
 
-  // Handle page change
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page) => {
     if (page > 0) setCurrentPage(page);
   };
 
-  // Handle refresh
   const handleRefresh = () => {
     setIsRefreshing(true);
-    setLoading(true); // Set loading to true when refreshing
+    setLoading(true);
     setTimeout(() => {
       fetchOrders(currentPage);
       setIsRefreshing(false);
-      setLoading(false); // Reset loading after refreshing
+      setLoading(false);
     }, 1000);
   };
+  
   const handleLogin = () => {
     router.push("/login");
   };
-
 
   if (!session) {
     return (
@@ -168,7 +155,7 @@ const OrdersPage: React.FC = () => {
           <button 
             onClick={handleLogin} 
             className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-            disabled={isProcessing} // Disable button while processing
+            disabled={isProcessing}
           >
             {isProcessing ? 'Processing...' : 'Go to Login Page'}
           </button>
@@ -178,7 +165,6 @@ const OrdersPage: React.FC = () => {
   }
 
   return (
-
     <>
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} className='md:hidden' />
       <div className={`flex transition-all ${isSidebarOpen ? 'ml-[25%]' : 'ml-0'}`}>
@@ -186,7 +172,6 @@ const OrdersPage: React.FC = () => {
           <div className="mb-4 flex flex-col md:flex-row items-center justify-between">
             <h1 className="text-2xl text-purple-400 font-bold">Orders List</h1>
             <div className="relative flex items-center space-x-4 md:space-x-4">
-              {/* Dropdown for small screens */}
               <div className="md:hidden" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -213,7 +198,6 @@ const OrdersPage: React.FC = () => {
                   </div>
                 )}
               </div>
-              {/* Buttons for larger screens */}
               <div className="hidden md:flex items-center space-x-4">
                 <button
                   onClick={handleRefresh}
@@ -245,7 +229,7 @@ const OrdersPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders && orders.length === 0 ? (
+                  {orders.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center p-4">No orders found</td>
                     </tr>
@@ -265,7 +249,6 @@ const OrdersPage: React.FC = () => {
                   )}
                 </tbody>
               </table>
-              {/* Pagination Controls */}
               <div className="flex justify-between items-center mt-4">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
@@ -287,7 +270,6 @@ const OrdersPage: React.FC = () => {
           )}
         </div>
       </div>
-
       <ToastContainer />
     </>
   );
