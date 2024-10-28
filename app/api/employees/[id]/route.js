@@ -1,8 +1,9 @@
+// pages/api/employees/[id].js
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../libs/prismadb'; // Adjust the path if needed
 
 // GET request: Retrieve a single employee by ID
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -26,7 +27,7 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(employee);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching employee:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error fetching employee.' }),
@@ -36,7 +37,7 @@ export async function GET(req: NextRequest) {
 }
 
 // PUT request: Update an employee by ID
-export async function PUT(req: NextRequest) {
+export async function PUT(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
   const body = await req.json();
@@ -60,7 +61,7 @@ export async function PUT(req: NextRequest) {
     });
 
     return NextResponse.json(updatedEmployee);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error updating employee:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error updating employee.' }),
@@ -70,7 +71,7 @@ export async function PUT(req: NextRequest) {
 }
 
 // DELETE request: Delete a single employee by ID
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -87,7 +88,7 @@ export async function DELETE(req: NextRequest) {
     });
 
     return NextResponse.json({ message: 'Employee deleted successfully.', employee: deletedEmployee });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error deleting employee:', error);
     if (error.code === 'P2025') { // Prisma error code for not found
       return new NextResponse(JSON.stringify({ error: 'Employee not found.' }), { status: 404 });
