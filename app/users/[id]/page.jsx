@@ -6,23 +6,12 @@ import { useSession } from 'next-auth/react';
 import Sidebar from '../../../components/sidebar/page'; // Ensure the correct path
 import LoadingSpinner from '../../../components/spinner/page';
 
-// Define the User type
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: 'Admin' | 'User';
-  image: string;
-  dateJoined: string;
-  // Add other fields if necessary
-}
-
-const UserDetail: React.FC = () => {
+const UserDetail = () => {
   const { id } = useParams(); // Get user ID from URL
   const { data: session, status } = useSession();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true); // Track loading state for user details
-  const [isSidebarOpen, setSidebarOpen] = useState(true); // Set initial state to true to display the sidebar
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,16 +26,16 @@ const UserDetail: React.FC = () => {
         })
         .then(data => {
           setUser(data);
-          setLoading(false); // Set loading to false after data is fetched
+          setLoading(false);
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
-          setLoading(false); // Set loading to false if there's an error
+          setLoading(false);
         });
     }
   }, [id]);
 
-  if (status === 'loading' || loading) { // Show spinner if session is loading or user data is loading
+  if (status === 'loading' || loading) {
     return <LoadingSpinner />;
   }
 
