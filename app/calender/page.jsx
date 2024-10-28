@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,34 +12,14 @@ import Sidebar from '../../components/sidebar/page';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-type Event = {
-  title: string;
-  date: string;
-  color: string;
-  id: string;
-};
-
-type Notification = {
-  id: string;
-  message: string;
-};
-
-interface User {
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
-  role?: string;
-}
-
-const CalendarPage: React.FC = () => {
+const CalendarPage = () => {
   const { data: session, status } = useSession();
-  const [events, setEvents] = useState<Event[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [events, setEvents] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [openEventDialog, setOpenEventDialog] = useState(false);
   const [eventTitle, setEventTitle] = useState('');
   const [eventDate, setEventDate] = useState('');
-  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [selectedEventId, setSelectedEventId] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isEventsDrawerOpen, setIsEventsDrawerOpen] = useState(false);
@@ -66,7 +46,7 @@ const CalendarPage: React.FC = () => {
     }
   }, [notifications]);
 
-  const handleDateClick = (arg: any) => {
+  const handleDateClick = (arg) => {
     const today = new Date().toISOString().split('T')[0];
     if (arg.dateStr >= today) {
       setEventDate(arg.dateStr);
@@ -77,10 +57,10 @@ const CalendarPage: React.FC = () => {
 
   const handleAddEvent = async () => {
     if (eventTitle && eventDate) {
-      if ((session?.user as User)?.role === 'ADMIN') {
+      if (session?.user?.role === 'ADMIN') {
         setLoading(true);
         try {
-          const newEvent: Event = { title: eventTitle, date: eventDate, color: 'green', id: Date.now().toString() };
+          const newEvent = { title: eventTitle, date: eventDate, color: 'green', id: Date.now().toString() };
           const response = await fetch('/api/events', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -107,10 +87,10 @@ const CalendarPage: React.FC = () => {
 
   const handleUpdateEvent = async () => {
     if (eventTitle && eventDate && selectedEventId) {
-      if ((session?.user as User)?.role === 'ADMIN') {
+      if (session?.user?.role === 'ADMIN') {
         setLoading(true);
         try {
-          const updatedEvent: Event = { title: eventTitle, date: eventDate, color: 'green', id: selectedEventId };
+          const updatedEvent = { title: eventTitle, date: eventDate, color: 'green', id: selectedEventId };
           const response = await fetch(`/api/events/${selectedEventId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -136,8 +116,8 @@ const CalendarPage: React.FC = () => {
     }
   };
 
-  const handleDeleteEvent = async (eventId: string) => {
-    if ((session?.user as User)?.role === 'ADMIN') {
+  const handleDeleteEvent = async (eventId) => {
+    if (session?.user?.role === 'ADMIN') {
       setLoading(true);
       try {
         await fetch(`/api/events/${eventId}`, {
@@ -155,7 +135,7 @@ const CalendarPage: React.FC = () => {
     }
   };
 
-  const handleEventClick = (arg: any) => {
+  const handleEventClick = (arg) => {
     const event = events.find(e => e.id === arg.event.id);
     if (event && event.date >= new Date().toISOString().split('T')[0]) {
       setEventTitle(event.title);
@@ -170,8 +150,8 @@ const CalendarPage: React.FC = () => {
   };
 
   const handleAddNotification = () => {
-    if ((session?.user as User)?.role === 'ADMIN') {
-      const newNotification: Notification = { id: Date.now().toString(), message: 'New Notification' };
+    if (session?.user?.role === 'ADMIN') {
+      const newNotification = { id: Date.now().toString(), message: 'New Notification' };
       setNotifications([...notifications, newNotification]);
       setNotificationCount(prev => prev + 1);
       toast.success('Notification created successfully!');
@@ -184,7 +164,7 @@ const CalendarPage: React.FC = () => {
     setIsEventsDrawerOpen(!isEventsDrawerOpen);
   };
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path) => {
     router.push(path);
     if (path === '/account') {
       setNotificationCount(0);
@@ -193,10 +173,9 @@ const CalendarPage: React.FC = () => {
 
   if (status === 'loading') {
     return (
-
       <div className="flex justify-center items-center h-96">
-              <CircularProgress />
-            </div>
+        <CircularProgress />
+      </div>
     );
   }
 
@@ -219,7 +198,7 @@ const CalendarPage: React.FC = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} className='md:hidded' />
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} className='md:hidden' />
 
       <main className={`flex-1 p-4 ${isSidebarOpen ? 'ml-[24%] w-[75%]' : 'ml-0 w-full'} bg-blue-400`}>
         <div className="mb-4 flex justify-between items-center">
@@ -365,7 +344,7 @@ const CalendarPage: React.FC = () => {
                   <Button
                     onClick={() => {
                       handleDeleteEvent(event.id || '');
-                      if (events.length === 1) { // Close drawer if last event is deleted
+                      if (events.length === 1) {
                         toggleEventsDrawer();
                       }
                     }}
