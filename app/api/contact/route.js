@@ -1,15 +1,10 @@
+// pages/api/contact.js
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-interface EmailRequest {
-  name: string;  // Added name to the interface
-  email: string;
-  message: string;
-}
-
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
-    const { name, email, message }: EmailRequest = await request.json();
+    const { name, email, message } = await request.json();
 
     // Validate input
     if (!name || !email || !message) {
