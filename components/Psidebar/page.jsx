@@ -1,25 +1,11 @@
-"use client";
-
+// src/components/sidebar/Sidebar.js
 import React, { useState, useEffect, useRef } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { useCart } from '../../context/page'; // Adjust the path if necessary
 import { useRouter } from 'next/navigation';
 
-type Category = 'Accessories' | 'Groceries' | 'Fashions' | 'Home Appliants' | 'Kids';
-
-interface FilterState {
-  price: string;
-  categorys: Record<Category, boolean>;
-}
-
-interface SidebarProps {
-  onFilterChange: (filter: FilterState) => void;
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ onFilterChange, isOpen, setIsOpen }) => {
-  const [filterState, setFilterState] = useState<FilterState>({
+const Sidebar = ({ onFilterChange, isOpen, setIsOpen }) => {
+  const [filterState, setFilterState] = useState({
     price: '',
     categorys: {
       'Accessories': false,
@@ -30,14 +16,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange, isOpen, setIsOpen }) 
     }
   });
 
-  const [isCartDropdownOpen, setIsCartDropdownOpen] = useState<boolean>(true); // Initialize as open
+  const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(true); // Initialize as open
   const { state: cartState } = useCart();
   const router = useRouter();
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const cartDropdownRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef(null);
+  const cartDropdownRef = useRef(null);
 
-  const totalItems = cartState?.items.reduce<number>((sum, item) => sum + item.quantity, 0) || 0;
-  const totalPrice = cartState?.items.reduce<number>((sum, item) => sum + item.price * item.quantity, 0) || 0;
+  const totalItems = cartState?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
+  const totalPrice = cartState?.items.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
 
   useEffect(() => {
     if (isOpen && window.innerWidth < 855) {
@@ -60,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange, isOpen, setIsOpen }) 
     }
   }, []);
 
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePriceChange = (event) => {
     const { value } = event.target;
     setFilterState(prevState => {
       const newFilterState = { ...prevState, price: value };
@@ -78,11 +64,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange, isOpen, setIsOpen }) 
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsOpen(false); // Close sidebar when clicking outside
       }
-      if (cartDropdownRef.current && !cartDropdownRef.current.contains(event.target as Node)) {
+      if (cartDropdownRef.current && !cartDropdownRef.current.contains(event.target)) {
         setIsCartDropdownOpen(false); // Close cart dropdown when clicking outside
       }
     };
@@ -164,7 +150,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange, isOpen, setIsOpen }) 
         </div>
 
         {/* Cart Dropdown Box */}
-        <div ref={cartDropdownRef} className={`card card-compact dropdown-content bg-base-100  mt-8 w-full max-w-sm shadow ${isCartDropdownOpen ? 'block' : ''}`}>
+        <div ref={cartDropdownRef} className={`card card-compact dropdown-content bg-base-100 mt-8 w-full max-w-sm shadow ${isCartDropdownOpen ? 'block' : ''}`}>
           <div className="card-body">
             <h1 className='text-2xl text-purple-700 mb-2'>Your cart</h1>
             <span className="text-lg font-bold text-blue-700">({totalItems} items)</span>
