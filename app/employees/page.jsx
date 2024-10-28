@@ -4,29 +4,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import LoadingSpinner from '../../components/spinner/page'; // Make sure this is the correct path
-import Sidebar from '../../components/sidebar/page'; // Make sure this is the correct path
+import LoadingSpinner from '../../components/spinner/page'; // Ensure this is the correct path
+import Sidebar from '../../components/sidebar/page'; // Ensure this is the correct path
 import { FaSync, FaEnvelope, FaFilePdf, FaEllipsisV } from 'react-icons/fa';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
 
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  dateAdded: string; // Date in ISO 8601 format
-}
-
 const PAGE_SIZE = 10;
 
-const EmployeePage: React.FC = () => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
+const EmployeePage = () => {
+  const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -38,18 +29,17 @@ const EmployeePage: React.FC = () => {
   const [emailBody, setEmailBody] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showAccessDenied, setShowAccessDenied] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false); // Add this state
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef(null);
+  const modalRef = useRef(null);
   const router = useRouter();
   
   const { data: session, status } = useSession();
   
   const handleLogin = () => {
-    setIsProcessing(true); // Set processing state to true
-    router.push("/login")
- ;
+    setIsProcessing(true);
+    router.push("/login");
   };
 
   useEffect(() => {
@@ -118,7 +108,7 @@ const EmployeePage: React.FC = () => {
   };
 
   const exportToPDF = () => {
-    const docDefinition: TDocumentDefinitions = {
+    const docDefinition = {
       content: [
         { text: 'Employees Report', style: 'header' },
         { text: 'This report includes detailed information about all employees.', style: 'intro' },
@@ -175,7 +165,7 @@ const EmployeePage: React.FC = () => {
     fetchEmployees().finally(() => setIsRefreshing(false));
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (event) => {
     const term = event.target.value;
     setSearchTerm(term);
     const filtered = employees.filter(employee =>
@@ -186,14 +176,14 @@ const EmployeePage: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page) => {
     const startIndex = (page - 1) * PAGE_SIZE;
     const endIndex = page * PAGE_SIZE;
     setFilteredEmployees(employees.slice(startIndex, endIndex));
     setCurrentPage(page);
   };
 
-  const handleRowClick = (id: string) => {
+  const handleRowClick = (id) => {
     router.push(`/employees/${id}`);  // Adjust route
   };
 
