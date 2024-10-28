@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
@@ -10,25 +10,15 @@ import moment from 'moment';
 import { FaSync, FaEnvelope, FaFilePdf, FaEllipsisV } from 'react-icons/fa';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-// Define the User type with additional fields
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  dateJoined: string; // Assuming date is in ISO format
-  role: string; // Role of the user (e.g., 'subscriber', 'admin')
-}
-
 const PAGE_SIZE = 10;
 
-const SubscribersPage: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [totalUsers, setTotalUsers] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+const SubscribersPage = () => {
+  const [users, setUsers] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,8 +26,8 @@ const SubscribersPage: React.FC = () => {
   const [emailSubject, setEmailSubject] = useState('');
   const [emailBody, setEmailBody] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef(null);
+  const modalRef = useRef(null);
   const router = useRouter();
 
   // Authentication
@@ -61,7 +51,7 @@ const SubscribersPage: React.FC = () => {
   }, [session, status]);
 
   // Fetch users
-  const fetchUsers = async (page: number) => {
+  const fetchUsers = async (page) => {
     try {
       setLoading(true);
       const response = await axios.get(`/api/subs?page=${page}&limit=${PAGE_SIZE}`);
@@ -105,7 +95,7 @@ const SubscribersPage: React.FC = () => {
   };
 
   const exportToPDF = () => {
-    const docDefinition: TDocumentDefinitions = {
+    const docDefinition = {
       content: [
         { text: 'Subscribers Report', style: 'header' },
         {
@@ -163,7 +153,7 @@ const SubscribersPage: React.FC = () => {
     setDropdownOpen(false);
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
