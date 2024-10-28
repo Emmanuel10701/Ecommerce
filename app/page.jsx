@@ -1,21 +1,16 @@
-"use client";
-import { useState,useEffect } from 'react';
+// components/HomePage.jsx
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import CircularProgress from '@mui/material/CircularProgress';
-
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Interface for image data
-interface ImageData {
-  src: string;
-  text: string;
-}
-
 // Image data array with text
-const images: ImageData[] = [
+const images = [
   { src: '/assets/c4.webp', text: "Black Friday Deals" },
   { src: '/assets/ecomerce.jpg', text: "E-commerce Deals" },
   { src: '/assets/dania.jpg', text: "Modern Products" },
@@ -23,16 +18,16 @@ const images: ImageData[] = [
 ];
 
 const HomePage = () => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>('');
+  const [isHovered, setIsHovered] = useState(false);
+  const [email, setEmail] = useState('');
 
-  const prevSlide = (): void => {
+  const prevSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
 
-  const nextSlide = (): void => {
+  const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
@@ -46,7 +41,6 @@ const HomePage = () => {
   }, [isHovered]);
 
   const handleSubscribe = async () => {
-    // Validate email input
     if (!email) {
       toast.error('Please enter an email address.');
       return;
@@ -60,23 +54,22 @@ const HomePage = () => {
     try {
       await axios.post('/api/subs', { email });
       toast.success('Subscription successful!');
-        setLoading(true);
-          setLoading(false);
-      
-      setEmail(''); // Clear sfter submission
+      setLoading(true);
+      setLoading(false);
+      setEmail('');
     } catch (error) {
       console.error('Subscription error:', error);
       toast.error('Failed to subscribe. Please try again.');
     }
   };
 
-
   const handleClick = () => {
     setLoading(true);
     setTimeout(() => {
       window.location.href = '/Productslistpage';
-    }, 1000); // Simulate loading delay
+    }, 1000);
   };
+
   return (
     <div className="md:flex flex-col min-h-screen mt-24">
       {/* Image Slider */}
@@ -135,7 +128,7 @@ const HomePage = () => {
       </div>
 
       {/* Main Content */}
-      <main className=" py-12 bg-white">
+      <main className="py-12 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-6 text-center text-slate-500">
             Discover the Best Deals
@@ -144,21 +137,19 @@ const HomePage = () => {
             Explore a wide range of products at unbeatable prices. From the latest tech gadgets to stylish home decor, we have everything you need. Enjoy exclusive offers and discounts on your favorite items.
           </p>
           <div className="text-center mb-12">
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <span
-          className="bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-700 transition cursor-pointer"
-          onClick={handleClick}
-        >
-          Explore Our Products
-        </span>
-      )}
-    </div>
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <span
+                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-700 transition cursor-pointer"
+                onClick={handleClick}
+              >
+                Explore Our Products
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* Categories Section */}
-   
         {/* Statistics Section */}
         <section className="bg-gray-100 py-12">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -181,8 +172,8 @@ const HomePage = () => {
         </section>
 
         {/* Why Choose Us Section */}
-        <section className="py-12 bg-white flex  items center">
-          <div className="max-w-6xl mx-auto px-4  flex-1 sm:px-6 lg:px-8 text-center">
+        <section className="py-12 bg-white flex items-center">
+          <div className="max-w-6xl mx-auto px-4 flex-1 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold mb-6 text-slate-500">Why Choose Us?</h2>
             <div className="space-y-8">
               <div className="flex items-center justify-center space-x-4">
@@ -232,21 +223,17 @@ const HomePage = () => {
             </div>
           </div>
           <div className="hidden md:flex flex-1 justify-center">
-             <Image src="/assets/ecomerce.jpg" alt="image for customer" width={280} height={380} className="flex-1" />
-         </div>
-          </section>
+            <Image src="/assets/ecomerce.jpg" alt="image for customer" width={280} height={380} className="flex-1" />
+          </div>
+        </section>
 
         {/* FAQ Section */}
-        <section className="py-12 bg-gray-100 flex items-center ">
-      {/* Image section which is flex in bog screen and hidded in smallscreen  */}
-
-         
+        <section className="py-12 bg-gray-100 flex items-center">
           <div className="hidden md:flex flex-1 justify-center">
-             <Image src="/assets/img1.webp" alt="image for customer" width={280} height={380} className="flex-1" />
+            <Image src="/assets/img1.webp" alt="image for customer" width={280} height={380} className="flex-1" />
           </div>
 
-
-          <div className="max-w-6xl mb-3  flex-1 mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mb-3 flex-1 mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold mb-6 text-center text-slate-500">FAQ</h2>
             <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
               <input type="checkbox" id="faq1" className="peer hidden" />
@@ -296,31 +283,28 @@ const HomePage = () => {
             <p className="text-lg text-slate-100 mb-6 opacity-80">
               Subscribe to our newsletter to receive the latest updates, exclusive offers, and more. Don't miss out on our exciting promotions!
             </p>
-         <div className="flex  gap-2 sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="p-4 w-2/3 ml-2 max-w-xs text-slate-600 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-           <span
-            className={`${
-              loading ? 'flex items-center justify-center' : ''
-            } bg-white text-blue-700 px-6 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition cursor-pointer`}
-            onClick={!loading ? handleSubscribe : undefined}
-          >
-            {loading ? (
-              <>
-                <CircularProgress size={24} style={{ marginRight: 8 }} />
-                Subscribing...
-              </>
-            ) : (
-              'Subscribe'
-            )}
-          </span>
-        </div>
-
+            <div className="flex gap-2 sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="p-4 w-2/3 ml-2 max-w-xs text-slate-600 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span
+                className={`${loading ? 'flex items-center justify-center' : ''} bg-white text-blue-700 px-6 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition cursor-pointer`}
+                onClick={!loading ? handleSubscribe : undefined}
+              >
+                {loading ? (
+                  <>
+                    <CircularProgress size={24} style={{ marginRight: 8 }} />
+                    Subscribing...
+                  </>
+                ) : (
+                  'Subscribe'
+                )}
+              </span>
+            </div>
           </div>
         </section>
       </main>
