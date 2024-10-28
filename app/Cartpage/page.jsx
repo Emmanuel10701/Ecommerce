@@ -8,23 +8,23 @@ import { CircularProgress, Button } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'; // Icon example
 
 // Helper function to format prices
-const formatPrice = (price: number): string => {
+const formatPrice = (price) => {
   const priceStr = price.toFixed(2).toString();
   const [integerPart, decimalPart] = priceStr.split('.');
   const integerPartWithCommas = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return `${integerPartWithCommas}.${decimalPart}`;
 };
 
-const CartPage: React.FC = () => {
+const CartPage = () => {
   const router = useRouter();
   const { state, dispatch } = useCart();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRemoveItem = (id: string) => {
+  const handleRemoveItem = (id) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: { id } });
   };
 
-  const handleUpdateQuantity = (id: string, quantity: number) => {
+  const handleUpdateQuantity = (id, quantity) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
   };
 
