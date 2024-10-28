@@ -1,5 +1,4 @@
-"use client";
-
+// components/ChartGridComponent.jsx
 import React, { useEffect, useState } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as LineTooltip
@@ -11,32 +10,16 @@ import {
   PieChart, Pie, Cell, Tooltip as PieTooltip
 } from 'recharts';
 
-// Define the data types
-interface LineChartData {
-  name: string;
-  value: number;
-}
-
-interface ScatterPlotData {
-  x: number;
-  y: number;
-}
-
-interface PieChartData {
-  name: string;
-  value: number;
-}
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const ChartGridComponent: React.FC = () => {
-  const [lineChartData, setLineChartData] = useState<LineChartData[]>([]);
-  const [scatterPlotData, setScatterPlotData] = useState<ScatterPlotData[]>([]);
-  const [pieChartData, setPieChartData] = useState<PieChartData[]>([]);
+const ChartGridComponent = () => {
+  const [lineChartData, setLineChartData] = useState([]);
+  const [scatterPlotData, setScatterPlotData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
 
   useEffect(() => {
     // Dummy data for line chart
-    const dummyLineChartData: LineChartData[] = [
+    const dummyLineChartData = [
       { name: 'Jan', value: 400 },
       { name: 'Feb', value: 300 },
       { name: 'Mar', value: 500 },
@@ -46,7 +29,7 @@ const ChartGridComponent: React.FC = () => {
     setLineChartData(dummyLineChartData);
 
     // Dummy data for scatter plot
-    const dummyScatterPlotData: ScatterPlotData[] = [
+    const dummyScatterPlotData = [
       { x: 1, y: 20 },
       { x: 2, y: 30 },
       { x: 3, y: 25 },
@@ -56,7 +39,7 @@ const ChartGridComponent: React.FC = () => {
     setScatterPlotData(dummyScatterPlotData);
 
     // Dummy data for pie chart
-    const dummyPieChartData: PieChartData[] = [
+    const dummyPieChartData = [
       { name: 'Subscribers', value: 400 },
       { name: 'Admins', value: 100 },
       { name: 'Users', value: 300 },
