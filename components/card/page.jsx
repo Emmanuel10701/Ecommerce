@@ -1,3 +1,4 @@
+// components/Card.jsx
 'use client'; // Ensure this is a Client Component
 
 import React from 'react';
@@ -7,27 +8,17 @@ import StarRating from '../star/page'; // Import the StarRating component
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'; // Updated import
 
-interface CardProps {
-  id: string; // ID as a string
-  name: string;
-  price: number;
-  oldPrice?: number;
-  imageUrl?: string; // Changed from image to imageUrl
-  description?: string;
-  ratings?: number; // Changed from rating to ratings
-}
-
-const Card: React.FC<CardProps> = ({
-  id,
-  name,
-  price,
-  oldPrice,
+const Card = ({
+  id, 
+  name, 
+  price, 
+  oldPrice, 
   imageUrl = 'https://via.placeholder.com/150', // Default image
-  description = 'No description available.',
-  ratings = 0,
+  description = 'No description available.', 
+  ratings = 0
 }) => {
   const { state, dispatch } = useCart();
-  const [isInCart, setIsInCart] = React.useState<boolean>(false);
+  const [isInCart, setIsInCart] = React.useState(false);
   const router = useRouter(); // Use the new useRouter hook from next/navigation
 
   React.useEffect(() => {
@@ -67,8 +58,7 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <div 
-    onClick={handleCardClick} // Navigate on image click
-
+      onClick={handleCardClick} // Navigate on image click
       className="relative border p-2 rounded-lg overflow-hidden shadow-md w-[100%] bg-white hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer"
     >
       <div>
