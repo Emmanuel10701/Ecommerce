@@ -1,22 +1,16 @@
 "use client";
 
-import { FormEvent, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { BiSolidShow, BiSolidHide } from 'react-icons/bi';
-import { CircularProgress } from '@mui/material'; // Import CircularProgress
-
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-}
+import { CircularProgress } from '@mui/material';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [data, setData] = useState<FormData>({
+  const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
@@ -31,7 +25,7 @@ const Register = () => {
     setIsValid(name.trim() !== "" && email.trim() !== "" && password.trim() !== "");
   }, [data]);
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!isValid) return;
 
@@ -44,17 +38,14 @@ const Register = () => {
         toast.success('User registered successfully!');
         router.push('/login');
       } else {
-        // Handle specific errors from the server
         const responseData = response.data;
         toast.error(responseData.error || 'Registration failed. Please try again.');
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        // Extract specific error messages from the response
         const responseData = error.response.data;
         toast.error(responseData.error || 'Registration failed. Please try again.');
       } else {
-        // Handle unexpected errors
         console.error('Error during registration:', error);
         toast.error('Registration failed. Please try again.');
       }
