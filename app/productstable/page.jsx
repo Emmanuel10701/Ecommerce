@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { FaSync } from 'react-icons/fa';
 import StarRating from '../../components/starRating/page';
 import CircularProgress from '@mui/material/CircularProgress';
+import Image from 'next/image'; // Import Next.js Image
 
 const ListProducts = () => {
   const { data: session, status } = useSession();
@@ -210,7 +211,13 @@ const ListProducts = () => {
                   filteredProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize).map(product => (
                     <tr key={product.id}>
                       <td className="border border-gray-300 p-2">
-                        <img src={product.image || DEFAULT_IMAGE} alt={product.name} className="w-14 h-14 object-cover rounded-lg" />
+                        <Image 
+                          src={product.image || DEFAULT_IMAGE} 
+                          alt={product.name} 
+                          width={56} 
+                          height={56} 
+                          className="object-cover rounded-lg" 
+                        />
                       </td>
                       <td className="border border-gray-300 p-2">{product.name}</td>
                       <td className="border border-gray-300 p-2">ksh{product.price.toFixed(2)}</td>
@@ -299,7 +306,13 @@ const ListProducts = () => {
             <p><strong>Description:</strong> {selectedProduct?.description}</p>
             <p><strong>Price:</strong> ${selectedProduct?.price?.toFixed(2)}</p>
             <p><strong>Quantity:</strong> {selectedProduct?.quantity}</p>
-            <img src={selectedProduct?.image} alt={selectedProduct?.name} className="w-full h-auto mb-4 rounded-lg" />
+            <Image 
+              src={selectedProduct?.image || DEFAULT_IMAGE} 
+              alt={selectedProduct?.name} 
+              width={400} 
+              height={300} 
+              className="w-full h-auto mb-4 rounded-lg" 
+            />
             <button
               onClick={handleCloseModals}
               className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"

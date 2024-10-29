@@ -19,22 +19,10 @@ const testimonials = [
     imgSrc: "/images/woman.avif"
   },
   {
-    text: "The team provided exceptional service and went above and beyond to meet our needs. We couldn’t be happier with the results!",
-    author: "Sarah Lee",
-    position: "Marketing Director",
-    imgSrc: "/images/men2.jpeg"
-  },
-  {
     text: "Their professionalism and expertise are unmatched. The project was completed on time and exceeded our expectations.",
     author: "Michael Brown",
     position: "CEO",
     imgSrc: "/images/women2.jpeg"
-  },
-  {
-    text: "Their professionalism and expertise are unmatched. The project was completed on time and exceeded our expectations.",
-    author: "Michael Brown",
-    position: "CEO",
-    imgSrc: "/images/men3.jpeg"
   },
   {
     text: "A fantastic team to work with. They understood our vision and delivered results that truly reflected our goals.",
@@ -99,20 +87,26 @@ const About = () => {
           />
         </div>
         <div className="flex-1 flex flex-col justify-center p-4">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-300 mb-4">Our Story</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-300 mb-4 bg-gradient-to-r from-blue-500 to-purple-500 inline-block text-transparent bg-clip-text">
+            Our Story
+          </h2>
           <p className="text-sm sm:text-md text-gray-400">
-            Founded in [Year], [Your Company Name] started with a vision to deliver high-quality products directly to you with ease and reliability. From a small venture in [Location], we’ve grown into a trusted name in eCommerce, committed to offering a curated selection of [product types] at competitive prices.
+            Founded in 2022, Emmanuel Company started with a vision to deliver high-quality products directly to you with ease and reliability. From a small venture in [Location], we’ve grown into a trusted name in eCommerce, committed to offering a curated selection of [product types] at competitive prices.
           </p>
         </div>
       </div>
 
       <section className="max-w-4xl mx-auto bg-white shadow-sm rounded-lg overflow-hidden mt-12 p-4 sm:p-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-slate-400">Our Mission</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 bg-gradient-to-r from-blue-500 to-purple-500 inline-block text-transparent bg-clip-text">
+          Our Mission
+        </h2>
         <p className="text-gray-700 mb-6">
           We are dedicated to providing top-notch services to our clients. Our mission is to innovate and deliver solutions that meet the highest standards of quality and efficiency.
         </p>
         
-        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-400 mb-4">Our Values</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-400 mb-4 bg-gradient-to-r from-blue-500 to-purple-500 inline-block text-transparent bg-clip-text">
+          Our Values
+        </h2>
         <ul className="list-disc list-inside text-slate-500 mb-6">
           <li>Integrity</li>
           <li>Customer Focus</li>
@@ -120,7 +114,9 @@ const About = () => {
           <li>Collaboration</li>
         </ul>
 
-        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-500 mb-6">Meet the Team</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-500 mb-6 bg-gradient-to-r from-blue-500 to-purple-500 inline-block text-transparent bg-clip-text">
+          Meet the Team
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {teamMembers.map((member) => (
             <div key={member.name} className="flex flex-col border text-center text-slate-400 bg-slate-100 items-center p-4 rounded-lg">
@@ -139,7 +135,9 @@ const About = () => {
       </section>
 
       <section className="w-full bg-white shadow-sm rounded-lg overflow-hidden mt-12 relative">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center">What Our Clients Say</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-500 to-purple-500 inline-block text-transparent bg-clip-text">
+          What Our Clients Say
+        </h2>
         <button
           onClick={scrollLeft}
           className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 focus:outline-none"

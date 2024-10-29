@@ -9,7 +9,7 @@ import Sidebar from '../../components/sidebar/page';
 import { FaSync, FaEnvelope, FaFilePdf, FaEllipsisV, FaTrash } from 'react-icons/fa';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';

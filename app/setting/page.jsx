@@ -22,14 +22,15 @@ const kenyaCounties = [
 const ProfileSettings = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [country] = useState("Kenya 🇰🇪");
   const [county, setCounty] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profileImage, setProfileImage] = useState(null);
+  const navigate = useRouter();
 
   useEffect(() => {
+    // This will only run on the client side
     const savedName = localStorage.getItem("name");
     const savedEmail = localStorage.getItem("email");
     const savedCounty = localStorage.getItem("county");
@@ -64,8 +65,6 @@ const ProfileSettings = () => {
       }
     }
   };
-
-  const navigate = useRouter();
 
   const handleSaveProfile = () => {
     if (!name || !email) {

@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar/page";
 import Footer from "../components/Footer/page";
-import { Provider } from "./provider";
+import Provider from "./provider"
 import { CartProvider } from '../context/page';
 import { usePathname } from 'next/navigation';
 

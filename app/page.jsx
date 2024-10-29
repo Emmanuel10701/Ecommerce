@@ -45,24 +45,31 @@ const HomePage = () => {
       toast.error('Please enter an email address.');
       return;
     }
+  
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast.error('Please enter a valid email address.');
       return;
     }
-
+  
+    // Set loading state to true before the API call
+    setLoading(true);
+  
     try {
+      // Attempt to subscribe
       await axios.post('/api/subs', { email });
       toast.success('Subscription successful!');
-      setLoading(true);
-      setLoading(false);
-      setEmail('');
+      setEmail(''); // Clear the email input field
     } catch (error) {
       console.error('Subscription error:', error);
       toast.error('Failed to subscribe. Please try again.');
+    } finally {
+      // Always reset loading state after API call
+      setLoading(false);
     }
   };
-
+  
   const handleClick = () => {
     setLoading(true);
     setTimeout(() => {

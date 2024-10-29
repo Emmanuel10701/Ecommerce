@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 const CreateProduct = () => {
   const [formData, setFormData] = useState({
@@ -38,8 +39,6 @@ const CreateProduct = () => {
         setFormData(prev => ({ ...prev, [name]: null }));
         setImagePreviewUrl(null);
       }
-    } else if (type === 'select-one') {
-      setFormData(prev => ({ ...prev, [name]: value }));
     } else {
       setFormData(prev => ({
         ...prev,
@@ -259,8 +258,14 @@ const CreateProduct = () => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {imagePreviewUrl && (
-              <div className="mt-4">
-                <img src={imagePreviewUrl} alt="Image Preview" className="w-full h-48 object-cover rounded-lg border border-gray-200" />
+              <div className="mt-4 relative w-full h-48">
+                <Image 
+                  src={imagePreviewUrl} 
+                  alt="Image Preview" 
+                  layout="fill" 
+                  objectFit="cover" 
+                  className="rounded-lg border border-gray-200" 
+                />
               </div>
             )}
           </div>

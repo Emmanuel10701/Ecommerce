@@ -1,19 +1,27 @@
-'use client';
+"use client"; // This component is a client component
 
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/page'; // Adjust to your actual path
 import { CircularProgress, Modal, Button } from '@mui/material';
+import Image from 'next/image'; // Import Next.js Image component
 
 const CheckoutPage = () => {
   const { state } = useCart();
-  const [billingInfo, setBillingInfo] = useState(() => {
-    const savedInfo = localStorage.getItem('billingInfo');
-    return savedInfo ? JSON.parse(savedInfo) : { name: '', email: '', address: '', city: '', zip: '' };
-  });
+  const [billingInfo, setBillingInfo] = useState({ name: '', email: '', address: '', city: '', zip: '' });
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [loadingCustomerDetails, setLoadingCustomerDetails] = useState(true);
+
+  useEffect(() => {
+    // Load billing information from localStorage if available
+    if (typeof window !== 'undefined') {
+      const savedInfo = localStorage.getItem('billingInfo');
+      if (savedInfo) {
+        setBillingInfo(JSON.parse(savedInfo));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
@@ -56,7 +64,9 @@ const CheckoutPage = () => {
     const { name, value } = e.target;
     const updatedInfo = { ...billingInfo, [name]: value };
     setBillingInfo(updatedInfo);
-    localStorage.setItem('billingInfo', JSON.stringify(updatedInfo));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('billingInfo', JSON.stringify(updatedInfo));
+    }
   };
 
   const handleConfirmPayment = async () => {
@@ -95,7 +105,13 @@ const CheckoutPage = () => {
             {state.items.map(item => (
               <div key={item.id} className="flex justify-between items-center">
                 <div className="flex items-center space-x-4">
-                  <img src={item.imageUrl || 'https://via.placeholder.com/50'} alt={item.name} className="w-10 h-10 object-cover" />
+                  <Image
+                    src={item.imageUrl || 'https://via.placeholder.com/50'} // Replace with your image URL
+                    alt={item.name}
+                    width={40} // Set width for Image component
+                    height={40} // Set height for Image component
+                    className="object-cover" // Optional styling
+                  />
                   <div>
                     <h3 className="text-sm text-slate-400 font-medium">{item.name}</h3>
                     <p className="text-sm text-gray-400">{item.quantity} x KSh {item.price.toFixed(2)}</p>

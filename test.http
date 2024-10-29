@@ -1,0 +1,12 @@
+Request Type: POST
+URL: http://localhost:3000/api/contact
+
+Headers:
+- Content-Type: application/json
+
+Body:
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "message": "Hello, I am interested in your services!"
+}

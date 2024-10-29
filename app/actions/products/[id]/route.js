@@ -3,7 +3,8 @@ import prisma from '../../../../libs/prismadb'; // Adjust the path as needed
 
 // GET request to fetch a single product by ID
 export async function GET(request, { params }) {
-  const { id } = params;
+  // Ensure params are awaited
+  const { id } = await params; 
 
   try {
     const product = await prisma.product.findUnique({
@@ -23,7 +24,8 @@ export async function GET(request, { params }) {
 
 // PUT request to update a product by ID
 export async function PUT(request, { params }) {
-  const { id } = params;
+  // Ensure params are awaited
+  const { id } = await params; 
   const data = await request.json();
 
   try {
@@ -41,7 +43,8 @@ export async function PUT(request, { params }) {
 
 // DELETE request to remove a product by ID
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  // Ensure params are awaited
+  const { id } = await params; 
 
   try {
     await prisma.product.delete({

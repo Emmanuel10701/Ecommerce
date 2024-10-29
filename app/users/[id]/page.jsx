@@ -5,6 +5,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import Sidebar from '../../../components/sidebar/page'; // Ensure the correct path
 import LoadingSpinner from '../../../components/spinner/page';
+import Image from 'next/image'; // Import Next.js Image component
 
 const UserDetail = () => {
   const { id } = useParams(); // Get user ID from URL
@@ -74,7 +75,13 @@ const UserDetail = () => {
         {user ? (
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <div className="flex items-center space-x-4">
-              <img src={user.image} alt={user.name} className="w-24 h-24 rounded-full" />
+              <Image 
+                src={user.image} 
+                alt={user.name} 
+                width={96} 
+                height={96} 
+                className="rounded-full" 
+              />
               <div>
                 <h1 className="text-2xl font-semibold">{user.name}</h1>
                 <p className="text-gray-600">Email: {user.email}</p>

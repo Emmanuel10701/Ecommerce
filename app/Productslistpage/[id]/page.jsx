@@ -9,7 +9,8 @@ import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const ProductPage = ({ params }) => {
-  const { id } = params;
+  // Unwrap params
+  const { id } = React.use(params); 
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +40,9 @@ const ProductPage = ({ params }) => {
       }
     };
 
-    fetchProduct();
+    if (id) {
+      fetchProduct();
+    }
   }, [id]);
 
   const isInCart = state.items.some(item => item.id === id);

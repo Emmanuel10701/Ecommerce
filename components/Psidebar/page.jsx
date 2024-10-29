@@ -149,17 +149,29 @@ const Sidebar = ({ onFilterChange, isOpen, setIsOpen }) => {
           </div>
         </div>
 
-        {/* Cart Dropdown Box */}
-        <div ref={cartDropdownRef} className={`card card-compact dropdown-content bg-base-100 mt-8 w-full max-w-sm shadow ${isCartDropdownOpen ? 'block' : ''}`}>
-          <div className="card-body">
-            <h1 className='text-2xl text-purple-700 mb-2'>Your cart</h1>
-            <span className="text-lg font-bold text-blue-700">({totalItems} items)</span>
-            <span className="text-info">Subtotal: KSH {totalPrice.toFixed(2)}</span>
-            <div className="card-actions mt-4">
-              <button className="btn btn-primary btn-block" onClick={cartNavigation}>View cart</button>
-            </div>
-          </div>
-        </div>
+       {/* Cart Dropdown Box */}
+<div
+  ref={cartDropdownRef}
+  className={`card card-compact dropdown-content bg-base-100 mt-8 w-full max-w-sm shadow ${isCartDropdownOpen ? 'block' : ''}`}
+>
+  <div className="card-body mt-20 ">
+    <h1 className='text-2xl text-purple-700 mb-2'>Your Cart</h1>
+    <span className="text-lg font-bold text-blue-700">({totalItems} items)</span>
+    <div>
+    <span className="text-info">Subtotal: KSH {totalPrice.toFixed(2)}</span>
+
+    </div>
+    <div className="card-actions mt-4">
+      <button
+        className="btn rounded-full mt-10 bg-transparent border border-purple-700 text-purple-700 py-2 px-4 transition-all duration-300 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+        onClick={cartNavigation}
+      >
+        View Cart
+      </button>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   );
