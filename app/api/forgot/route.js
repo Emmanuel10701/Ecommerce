@@ -1,8 +1,9 @@
-// pages/api/forgot-password.js
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import prisma from '../../../libs/prismadb'; // Adjust the path as needed
 import { v4 as uuidv4 } from 'uuid';
+
+const url = "https://e-commerce-market-site.vercel.app"; // Your desired URL
 
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -22,7 +23,7 @@ export async function POST(req) {
     }
 
     const token = uuidv4(); // Generate a unique token
-    const resetLink = `${process.env.NEXTAUTH_URL}/reset?token=${token}`;
+    const resetLink = `${url}/reset?token=${token}`; // Use the fixed URL here
 
     // Set expiration to 1 hour from now
     const expires = new Date(Date.now() + 3600000); // 1 hour in milliseconds
