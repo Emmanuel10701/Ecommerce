@@ -252,14 +252,9 @@ const HomePage = () => {
     <h2 className="text-3xl font-bold mb-6 text-center text-slate-700">FAQ</h2>
     <div className="space-y-4">
       {faqs.map((faq, index) => (
-        <div key={index} className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
-          <input type="checkbox" id={`faq${index}`} className="peer hidden" />
-          <label htmlFor={`faq${index}`} className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
-            {faq.question}
-          </label>
-          <div className="collapse-content text-gray-600 opacity-75">
-            <p>{faq.answer}</p>
-          </div>
+        <div key={index} className="border border-gray-200 rounded-lg mb-4 p-4">
+          <h3 className="font-semibold text-slate-500">{faq.question}</h3>
+          <p className="text-gray-600 opacity-75">{faq.answer}</p>
         </div>
       ))}
     </div>
