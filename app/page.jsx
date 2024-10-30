@@ -234,52 +234,60 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
         <section className="py-12 bg-gray-100 flex items-center">
-          <div className="hidden md:flex flex-1 justify-center">
-            <Image src="/assets/img1.webp" alt="image for customer" width={280} height={380} className="flex-1" />
-          </div>
+  <div className="hidden md:flex flex-1 justify-center">
+    <Image src="/assets/img1.webp" alt="image for customer" width={280} height={380} className="flex-1" />
+  </div>
 
-          <div className="max-w-6xl mb-3 flex-1 mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold mb-6 text-center text-slate-500">FAQ</h2>
-            <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
-              <input type="checkbox" id="faq1" className="peer hidden" />
-              <label htmlFor="faq1" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
-                What is your return policy?
-              </label>
-              <div className="collapse-content text-gray-600 opacity-75">
-                <p>We offer a 30-day return policy on all products. If you're not satisfied with your purchase, please contact us to arrange a return or exchange.</p>
-              </div>
-            </div>
-            <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
-              <input type="checkbox" id="faq2" className="peer hidden" />
-              <label htmlFor="faq2" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
-                Do you offer international shipping?
-              </label>
-              <div className="collapse-content text-gray-600 opacity-75">
-                <p>Yes, we offer international shipping to many countries. Please check our shipping policy for more details.</p>
-              </div>
-            </div>
-            <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
-              <input type="checkbox" id="faq3" className="peer hidden" />
-              <label htmlFor="faq3" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
-                How can I track my order?
-              </label>
-              <div className="collapse-content text-gray-600 opacity-75">
-                <p>Once your order has shipped, you'll receive a tracking number via email. You can use this number to track your order on our website or the carrier's site.</p>
-              </div>
-            </div>
-            <div className="collapse collapse-plus border border-gray-200 rounded-lg">
-              <input type="checkbox" id="faq4" className="peer hidden" />
-              <label htmlFor="faq4" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
-                What payment methods do you accept?
-              </label>
-              <div className="collapse-content text-gray-600 opacity-75">
-                <p>We accept various payment methods including credit/debit cards, PayPal, and other secure payment gateways.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+  <div className="max-w-6xl mb-3 flex-1 mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 className="text-3xl font-bold mb-6 text-center text-slate-700">FAQ</h2>
+
+    {/* FAQ Item 1 */}
+    <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
+      <input type="checkbox" id="faq1" className="peer hidden" />
+      <label htmlFor="faq1" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
+        What is your return policy?
+      </label>
+      <div className="collapse-content text-gray-600 opacity-75">
+        <p>We offer a 30-day return policy on all products. If you're not satisfied with your purchase, please contact us to arrange a return or exchange.</p>
+      </div>
+    </div>
+
+    {/* FAQ Item 2 */}
+    <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
+      <input type="checkbox" id="faq2" className="peer hidden" />
+      <label htmlFor="faq2" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
+        Do you offer international shipping?
+      </label>
+      <div className="collapse-content text-gray-600 opacity-75">
+        <p>Yes, we offer international shipping to many countries. Please check our shipping policy for more details.</p>
+      </div>
+    </div>
+
+    {/* FAQ Item 3 */}
+    <div className="collapse collapse-plus border border-gray-200 rounded-lg mb-4">
+      <input type="checkbox" id="faq3" className="peer hidden" />
+      <label htmlFor="faq3" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
+        How can I track my order?
+      </label>
+      <div className="collapse-content text-gray-600 opacity-75">
+        <p>Once your order has shipped, you'll receive a tracking number via email. You can use this number to track your order on our website or the carrier's site.</p>
+      </div>
+    </div>
+
+    {/* FAQ Item 4 */}
+    <div className="collapse collapse-plus border border-gray-200 rounded-lg">
+      <input type="checkbox" id="faq4" className="peer hidden" />
+      <label htmlFor="faq4" className="collapse-title text-xl font-semibold text-slate-500 cursor-pointer peer-checked:bg-gray-100">
+        What payment methods do you accept?
+      </label>
+      <div className="collapse-content text-gray-600 opacity-75">
+        <p>We accept various payment methods including credit/debit cards, PayPal, and other secure payment gateways.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         {/* Subscription Form */}
         <section className="py-12 bg-blue-700 flex text-slate-50">
