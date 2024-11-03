@@ -98,7 +98,7 @@ const CheckoutPage = () => {
   return (
     <div className="checkout p-4 max-w-screen-lg mx-auto">
       <h1 className="text-3xl text-slate-600 font-bold mb-6">Checkout</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="md:flex flex-wrap flex-col gap-6">
         <div className="order-summary bg-white p-4 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-blue-500 mb-4 text-center">Order Summary</h2>
           <div className="space-y-4">
@@ -127,7 +127,7 @@ const CheckoutPage = () => {
           </div>
         </div>
 
-        <div className="billing-info bg-white p-4 rounded-lg shadow-md">
+        <div className="billing-info bg-white p-4 mb-[20%] md:mb-4 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-blue-500 mb-4">Billing Information</h2>
           <form onSubmit={e => { e.preventDefault(); setModalOpen(true); }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
