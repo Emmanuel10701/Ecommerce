@@ -1,4 +1,4 @@
-"use client"; // This component is a client component
+"use client"; 
 
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/page'; // Adjust to your actual path
@@ -180,7 +180,7 @@ const CheckoutPage = () => {
 
             <button
               type="submit"
-              className={`w-full mt-6 p-3 rounded-lg shadow-lg transition-colors ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+              className={`w-1/2 rounded-full  mt-6 p-3  shadow-lg transition-colors ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
               disabled={loading}
             >
               {loading ? (
