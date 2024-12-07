@@ -131,6 +131,23 @@ const Login = () => {
               'Sign In'
             )}
           </button>
+          <button
+          onClick={() => signIn("google")}
+          className="flex items-center justify-center w-full py-3 bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 transition"
+        >
+          <FcGoogle className="text-2xl mr-3" />
+          <span className="text-gray-700 font-medium">Sign in with Google</span>
+        </button>
+        <p className="text-center text-sm text-gray-500 mt-6">
+          By signing in, you agree to our{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Privacy Policy
+          </a>.
+        </p>
 
           <p className="text-center text-gray-600 text-sm">
             Don&apos;t have an account?{" "}
