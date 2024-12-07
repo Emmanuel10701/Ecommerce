@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { BiSolidShow, BiSolidHide } from 'react-icons/bi';
 import { toast, ToastContainer } from 'react-toastify';
